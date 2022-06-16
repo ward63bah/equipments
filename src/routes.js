@@ -24,6 +24,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: '', element: <DashboardApp /> },
+        { path: 'calibrate', element: <DashboardApp /> },
         // { path: 'equipment', element: <Equipment equipments={equipments} /> },
         { path: 'equipment', element: <EquipmentTypes /> },
         // { path: 'user', element: <User /> },
