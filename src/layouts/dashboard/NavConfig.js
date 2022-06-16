@@ -8,12 +8,12 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 const navConfig = [
   {
     title: 'Calibrate',
-    path: '/dashboard/app',
+    path: '/material-kit-react/calibrate',
     icon: getIcon('eva:pie-chart-2-fill'),
   },
   {
     title: 'Equipment',
-    path: '/dashboard/equipment',
+    path: '/material-kit-react/equipment',
     icon: getIcon('eva:people-fill'),
   },
   // {

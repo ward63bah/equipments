@@ -20,10 +20,10 @@ import EquipmentTypes from './pages/EquipmentTypes';
 export default function Router() {
   return useRoutes([
     {
-      path: '/dashboard',
+      path: '/material-kit-react',
       element: <DashboardLayout />,
       children: [
-        { path: 'app', element: <DashboardApp /> },
+        { path: 'calibrate', element: <DashboardApp /> },
         // { path: 'equipment', element: <Equipment equipments={equipments} /> },
         { path: 'equipment', element: <EquipmentTypes /> },
         // { path: 'user', element: <User /> },
@@ -35,7 +35,7 @@ export default function Router() {
       path: '/',
       element: <LogoOnlyLayout />,
       children: [
-        { path: '/', element: <Navigate to="/dashboard/app" /> },
+        { path: '/', element: <Navigate to="/material-kit-react/app" /> },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
         { path: '404', element: <NotFound /> },
