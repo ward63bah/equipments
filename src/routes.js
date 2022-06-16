@@ -23,7 +23,7 @@ export default function Router() {
       path: '/material-kit-react',
       element: <DashboardLayout />,
       children: [
-        { path: 'calibrate', element: <DashboardApp /> },
+        { path: '', element: <DashboardApp /> },
         // { path: 'equipment', element: <Equipment equipments={equipments} /> },
         { path: 'equipment', element: <EquipmentTypes /> },
         // { path: 'user', element: <User /> },
