@@ -11,6 +11,10 @@ import Register from './pages/Register';
 import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 
+import Equipment from './pages/Equipment';
+import { equipments } from './_mock/equipment';
+import EquipmentTypes from './pages/EquipmentTypes';
+
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -20,7 +24,9 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: 'app', element: <DashboardApp /> },
-        { path: 'user', element: <User /> },
+        // { path: 'equipment', element: <Equipment equipments={equipments} /> },
+        { path: 'equipment', element: <EquipmentTypes /> },
+        // { path: 'user', element: <User /> },
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> },
       ],
