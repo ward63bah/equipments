@@ -1,16 +1,17 @@
 {
-  "name": "@minimal/material-kit-react",
+  "name": "material-kit-react",
   "author": "minimals.cc",
   "licence": "MIT",
-  "version": "1.4.0",
-  "private": false,
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://stpeyyee.github.io/material-kit-react/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .js,.jsx ./src",
-    "lint:fix": "eslint --fix --ext .js,.jsx ./src"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
