@@ -196,6 +196,7 @@ export default function EquipmentTypes() {
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
+                          onClick={() => handlerExpandedRow(id)}
                         >
                           <TableCell>
                             <IconButton aria-label="expand row" size="small" onClick={() => handlerExpandedRow(id)}>
