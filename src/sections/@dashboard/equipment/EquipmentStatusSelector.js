@@ -38,7 +38,7 @@ export default function EquipmentStatusSelector(props) {
         </FormControl>
       ) : (
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Select</InputLabel>
+          <InputLabel id="demo-simple-select-label">select status</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"

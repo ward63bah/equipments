@@ -77,6 +77,9 @@ export default function EquipmentStatusHistory(props) {
     onCloseDialog();
   };
 
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filtered.length) : 0;
+  const isNotFound = filtered.length === 0;
+
   return (
     <div>
       <Dialog
@@ -87,7 +90,7 @@ export default function EquipmentStatusHistory(props) {
         fullWidth
         maxWidth="xl"
       >
-        <DialogTitle id="alert-dialog-title">{equipment.name}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{equipment.name} HISTORY</DialogTitle>
         <DialogContent>
           <Container maxWidth="xl" fixed>
             <Card>
@@ -125,7 +128,22 @@ export default function EquipmentStatusHistory(props) {
                           </>
                         );
                       })}
+                      {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
+                        </TableRow>
+                      )}
                     </TableBody>
+                    {isNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            {/* <SearchNotFound searchQuery={filterName} /> */}
+                            No data history
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )}
                   </Table>
                 </TableContainer>
               </Scrollbar>

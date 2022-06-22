@@ -81,9 +81,11 @@ export default function EquipmentDetail(props) {
 
   const handleClickOpen = () => {
     setOpen(true);
+    onCloseDialog();
   };
   const handleClose = () => {
     setOpen(false);
+    onCloseDialog();
   };
 
   const [status, setStatus] = useState('');
@@ -176,7 +178,7 @@ export default function EquipmentDetail(props) {
                     id="outlined-basic"
                     label=""
                     variant="outlined"
-                    value={latest ? latest.description : ''}
+                    value={latest ? latest.description : '-'}
                     disabled
                     fullWidth
                   />
@@ -218,6 +220,7 @@ export default function EquipmentDetail(props) {
                         variant="outlined"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
+                        placeholder="description (optional)"
                         fullWidth
                       />
                     </Grid>
