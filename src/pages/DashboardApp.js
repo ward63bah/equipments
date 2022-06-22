@@ -1,11 +1,14 @@
 import { faker } from '@faker-js/faker';
+import { filter } from 'lodash';
+import { useCallback, useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { Grid, Container, Typography, Button } from '@mui/material';
 // components
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import EquipmentCalibrate from './EquipmentCalibrate';
+import EquipmentDetail from '../sections/@dashboard/equipment/EquipmentDetail';
 
 // sections
 import {
@@ -21,39 +24,248 @@ import {
 } from '../sections/@dashboard/app';
 
 // mock
-import { equipments } from '../_mock/equipment';
+import { equipments as _equipments } from '../_mock/equipment';
+import { equipmentTypes } from '../_mock/equipment_types';
+// import EquipmentTypes from './EquipmentTypes';
+import Equipment from './Equipment';
+import EquipmentListToolbar from '../sections/@dashboard/equipment/EquipmentListToolbar';
+import EquipmentTypeSelector from '../sections/@dashboard/equipment_type/EquipmentTypeSelector';
+import EquipmentStatusSelector from '../sections/@dashboard/equipment/EquipmentStatusSelector';
+import NewRepairing from '../sections/repairing/NewRepairing';
+import EquipmentStatusHistory from '../sections/@dashboard/equipment/EquipmentStatusHistory';
+
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function applySortFilter(array, comparator, query) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+  }
+  return stabilizedThis.map((el) => el[0]);
+}
 
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
   const theme = useTheme();
 
+  const [show, setShow] = useState(false);
+  const [state, setState] = useState('');
+  const [equipment, setEquipment] = useState();
+  const [equipments, setEquipments] = useState(_equipments);
+  const [equipmentsHistory, setEquipmentsHistory] = useState([]);
+
+  const [selected, setSelected] = useState([]);
+  const [filterName, setFilterName] = useState('');
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('name');
+  const [filterType, setFilterType] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+
+  console.log('type/status/name', filterType, filterStatus, filterName);
+
+  const handleFilterByName = useCallback(
+    (event) => {
+      if (event.target.value === '' && filterType === '' && filterStatus === '') {
+        setEquipments(_equipments);
+      } else {
+        setEquipments(applySortFilter(equipments, getComparator(order, orderBy), event.target.value));
+      }
+      setFilterName(event.target.value);
+    },
+    [setFilterName, setEquipment, equipments]
+  );
+
+  const handleFilterByType = useCallback(
+    (type) => {
+      if (type === '' && filterName === '' && filterStatus === '') {
+        setEquipments(_equipments);
+      } else {
+        setEquipments(equipments.filter((e) => e.typeId === type));
+      }
+      setFilterType(type);
+    },
+    [setFilterType, setEquipments, equipments]
+  );
+
+  const handleFilterByStatus = useCallback(
+    (status) => {
+      if (status === '' && filterName === '' && filterType === '') {
+        setEquipment(_equipments);
+      } else {
+        setEquipments(equipments.filter((e) => e.status === status));
+      }
+      setFilterStatus(status);
+    },
+    [setFilterStatus, setEquipments, equipments]
+  );
+
+  const handleUpdateEquipment = useCallback(
+    (obj) => {
+      const index = equipments.findIndex((e) => e.sn === obj.sn);
+      if (index !== -1) {
+        setEquipmentsHistory([
+          ...equipmentsHistory,
+          { sn: obj.sn, status: obj.status, date: obj.date, description: obj.description },
+        ]);
+        const updateData = [
+          ...equipments.slice(0, index),
+          { ...obj, status: obj.status },
+          ...equipments.slice(index + 1),
+        ];
+        setEquipments(updateData);
+        console.log('update', updateData);
+      }
+    },
+    [setEquipmentsHistory, equipmentsHistory, equipments, setEquipments]
+  );
+
+  const handleDeleteEquipment = useCallback(
+    (sn) => {
+      const index = equipments.findIndex((e) => e.sn === sn);
+      if (index !== -1) {
+        const updateData = equipments.filter((e) => e.sn !== sn);
+        setEquipments(updateData);
+      }
+    },
+    [equipments, setEquipments]
+  );
+
+  const onSelected = useCallback(
+    (state, equipment) => {
+      setState(state);
+      setEquipment(equipment);
+      setShow(true);
+      console.log('selected', state, equipment);
+    },
+    [setState, setEquipment, setShow]
+  );
+
+  const onCloseDialog = useCallback(() => {
+    setShow(false);
+  }, [setShow]);
+
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+          Welcome
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="All Equipment" total={equipments.length} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="All Equipment" total={equipments?.length} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Available" total={20} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary
+              title="Available"
+              total={equipments?.filter((e) => e.status === 'available').length}
+              color="info"
+              icon={'ant-design:apple-filled'}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Wait to calibrate" total={5} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary
+              title="Repairing"
+              total={equipments?.filter((e) => e.status === 'repairing').length}
+              color="warning"
+              icon={'ant-design:windows-filled'}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="In Process" total={5} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary
+              title="Out Of Service"
+              total={equipments?.filter((e) => e.status === 'out of service').length}
+              color="error"
+              icon={'ant-design:bug-filled'}
+            />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={12}>
-            <EquipmentCalibrate equipments={equipments} />
+          <Grid item xs={12} sm={12} md={12}>
+            <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
+              <Grid item xs={12} sm={12} md={9}>
+                <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
+                  <Grid item xs={12} sm={12} md={4} lg={4}>
+                    <EquipmentTypeSelector equipmentTypes={equipmentTypes} onFilterType={handleFilterByType} />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={4} lg={4}>
+                    <EquipmentStatusSelector onFilterStatus={handleFilterByStatus} />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={4} lg={4}>
+                    <EquipmentListToolbar
+                      numSelected={selected.length}
+                      filterName={filterName}
+                      onFilterName={handleFilterByName}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={3}>
+                <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+                      New Equipment
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6} lg={6}>
+                    {/* <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+                      New repairing
+                    </Button> */}
+                    {/* <NewRepairing equipments={equipments} onAddRepairing={handleAddRepairing} /> */}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={12}>
+            {/* <EquipmentTypes onSelected={onSelected} /> */}
+            <Equipment
+              equipments={equipments}
+              equipmentTypes={equipmentTypes}
+              filterName={filterName}
+              selected={selected}
+              onSelected={onSelected}
+            />
+            {show && state === 'edit' && (
+              <EquipmentDetail
+                equipment={equipment}
+                equipmentsHistory={equipmentsHistory}
+                onCloseDialog={onCloseDialog}
+                onUpdateEquipment={handleUpdateEquipment}
+                onDeleteEquipment={handleDeleteEquipment}
+              />
+            )}
+            {show && state === 'history' && (
+              <EquipmentStatusHistory
+                equipment={equipment}
+                equipmentsHistory={equipmentsHistory}
+                onCloseDialog={onCloseDialog}
+              />
+            )}
             {/* <AppWebsiteVisits
               title="Website Visits"
               subheader="(+43%) than last year"

@@ -60,6 +60,7 @@
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "formik": "^2.2.9",
+    "fs": "^0.0.1-security",
     "gh-pages": "^4.0.0",
     "history": "^5.2.0",
     "lodash": "^4.17.21",

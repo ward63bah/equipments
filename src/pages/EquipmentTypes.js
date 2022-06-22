@@ -81,7 +81,8 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function EquipmentTypes() {
+export default function EquipmentTypes(props) {
+  const { onSelected } = props;
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -214,7 +215,7 @@ export default function EquipmentTypes() {
                           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                             <Collapse in={expandedID === id} timeout="auto" unmountOnExit>
                               <Box sx={{ margin: 1 }}>
-                                <Equipment equipments={equipments.filter((e) => e.id === id)} />
+                                <Equipment equipments={equipments.filter((e) => e.id === id)} onSelected={onSelected} />
                                 {/* <TableContainer
                                   sx={{
                                     width: '100%',
