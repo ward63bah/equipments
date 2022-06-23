@@ -65,8 +65,18 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function Equipment(props) {
-  const { equipments, equipmentTypes, filterName, selected, onSelected, onFilterType, onFilterStatus, onFilterName } =
-    props;
+  const {
+    equipment,
+    equipments,
+    equipmentTypes,
+    filterName,
+    selected,
+    onSelected,
+    onFilterType,
+    onFilterStatus,
+    onFilterName,
+    onScanQR,
+  } = props;
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
@@ -95,13 +105,13 @@ export default function Equipment(props) {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={3} spacing={1}>
-          <EquipmentScan equipments={equipments} onSelected={onSelected} />
+          <EquipmentScan equipment={equipment} equipments={equipments} onSelected={onSelected} onScanQR={onScanQR} />
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New Equipment
           </Button>
         </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={3} spacing={1}>
+        <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={3} spacing={1}>
           <Typography variant="h6" gutterBottom>
             Type :
           </Typography>

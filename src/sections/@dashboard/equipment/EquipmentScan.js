@@ -4,10 +4,10 @@ import { Button, Dialog, DialogActions, DialogTitle, DialogContent, Typography, 
 import Iconify from '../../../components/Iconify';
 
 export default function EquipmentScan(props) {
-  const { equipments, onSelected } = props;
+  const { equipment, equipments, onSelected, onScanQR } = props;
   const [data, setData] = useState('No result');
   const [open, setOpen] = useState(false);
-  const [equipment, setEquipment] = useState();
+  //   const [equipment, setEquipment] = useState();
 
   const constraints = {
     facingMode: { exact: 'environment' },
@@ -20,14 +20,14 @@ export default function EquipmentScan(props) {
   const handleClose = () => {
     setOpen(false);
     setData('No result');
-    setEquipment(undefined);
   };
 
   const onFindEquipment = (sn) => {
     const index = equipments.findIndex((e) => e.sn === sn);
     if (index !== -1) {
       setData(sn);
-      setEquipment(equipments[index]);
+      onScanQR(equipments[index]);
+      //   setEquipment(equipments[index]);
     }
   };
 

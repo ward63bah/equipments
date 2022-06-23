@@ -182,6 +182,13 @@ export default function DashboardApp() {
     [setState, setEquipment, setShow]
   );
 
+  const handleScanQR = useCallback(
+    (equipment) => {
+      setEquipment(equipment);
+    },
+    [setEquipment]
+  );
+
   const onCloseDialog = useCallback(() => {
     setShow(false);
   }, [setShow]);
@@ -228,6 +235,7 @@ export default function DashboardApp() {
           <Grid item xs={12} md={12} lg={12}>
             {/* <EquipmentTypes onSelected={onSelected} /> */}
             <Equipment
+              equipment={equipment}
               equipments={equipments}
               equipmentTypes={equipmentTypes}
               filterName={filterName}
@@ -236,6 +244,7 @@ export default function DashboardApp() {
               onFilterType={handleFilterByType}
               onFilterStatus={handleFilterByStatus}
               onFilterName={handleFilterByName}
+              onScanQR={handleScanQR}
             />
             {show && state === 'edit' && (
               <EquipmentDetail
