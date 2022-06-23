@@ -19,6 +19,8 @@ export default function EquipmentScan(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setData('No result');
+    setEquipment(undefined);
   };
 
   const onFindEquipment = (sn) => {
@@ -61,7 +63,6 @@ export default function EquipmentScan(props) {
                 }
               }}
               style={{ width: '50vw', heigth: '50vh' }}
-              scanDelay={500}
               // style={{ width: '200px', heigth: '100px' }}
             />
           ) : (
