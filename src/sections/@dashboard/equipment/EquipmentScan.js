@@ -4,8 +4,11 @@ import { Button, Dialog, DialogActions, DialogTitle, DialogContent, Typography }
 import Iconify from '../../../components/Iconify';
 
 export default function EquipmentScan(props) {
+  const { equipments, onSelected } = props;
   const [data, setData] = useState('No result');
   const [open, setOpen] = useState(false);
+  const [equipment, setEquipment] = useState();
+
   const constraints = {
     facingMode: { exact: 'environment' },
   };
@@ -16,6 +19,14 @@ export default function EquipmentScan(props) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const onFindEquipment = (sn) => {
+    const index = equipments.findIndex((e) => e.sn === sn);
+    if (index !== -1) {
+      setData(sn);
+      setEquipment(equipments[index]);
+    }
   };
 
   return (
@@ -34,22 +45,51 @@ export default function EquipmentScan(props) {
       >
         <DialogTitle id="alert-dialog-title">QR SCANNER</DialogTitle>
         <DialogContent>
-          <Typography>{data}</Typography>
-          <QrReader
-            constraints={constraints}
-            onResult={(result, error) => {
-              if (result !== undefined) {
-                setData(result?.text);
-                console.log('scan', result?.text);
-              }
+          <Typography>Serial Number : {data}</Typography>
+          {data === 'No result' ? (
+            <QrReader
+              constraints={constraints}
+              onResult={(result, error) => {
+                if (result !== undefined) {
+                  onFindEquipment(result?.text);
+                  // setData(result?.text);
+                  console.log('scan', result?.text);
+                }
 
-              if (error !== undefined) {
-                console.info(error);
-              }
-            }}
-            style={{ width: '50vw', heigth: '50vh' }}
-            // style={{ width: '200px', heigth: '100px' }}
-          />
+                if (error !== undefined) {
+                  console.info(error);
+                }
+              }}
+              style={{ width: '50vw', heigth: '50vh' }}
+              scanDelay={500}
+              // style={{ width: '200px', heigth: '100px' }}
+            />
+          ) : (
+            <>
+              <Button
+                // component={Link}
+                target="_blank"
+                // href="https://mantisdashboard.io"
+                variant="contained"
+                color="success"
+                size="small"
+                onClick={() => onSelected('edit', equipment)}
+              >
+                Edit
+              </Button>
+              <Button
+                // component={Link}
+                target="_blank"
+                // href="https://mantisdashboard.io"
+                variant="contained"
+                color="warning"
+                size="small"
+                onClick={() => onSelected('history', equipment)}
+              >
+                History
+              </Button>
+            </>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

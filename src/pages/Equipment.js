@@ -119,7 +119,7 @@ export default function Equipment(props) {
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New Equipment
           </Button>
-          <EquipmentScan />
+          <EquipmentScan equipments={equipments} onSelected={onSelected} />
         </Stack>
 
         <Card>
