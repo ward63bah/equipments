@@ -75,7 +75,7 @@ function applySortFilter(orderBy, array, comparator, query) {
 export default function DashboardApp() {
   const theme = useTheme();
   const { sn } = useParams();
-  // console.log('sn', sn);
+  console.log('sn', sn);
 
   const [show, setShow] = useState(false);
   const [state, setState] = useState('');
