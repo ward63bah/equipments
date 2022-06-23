@@ -16,6 +16,7 @@ export default function EquipmentScan(props) {
       ) : (
         <>
           <QrReader
+            facingMode="environment"
             onResult={(result, error) => {
               if (!result) {
                 setData(result?.text);
@@ -26,7 +27,8 @@ export default function EquipmentScan(props) {
                 console.info(error);
               }
             }}
-            style={{ width: '100%' }}
+            // style={{ width: '100%' }}
+            style={{ width: '200px', heigth: '100px' }}
           />
           <p>{data}</p>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => setScan(false)}>
