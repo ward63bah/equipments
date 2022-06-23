@@ -9,7 +9,6 @@ import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import EquipmentCalibrate from './EquipmentCalibrate';
 import EquipmentDetail from '../sections/@dashboard/equipment/EquipmentDetail';
-import EquipmentScan from '../sections/@dashboard/equipment/EquipmentScan';
 
 // sections
 import {
@@ -189,7 +188,6 @@ export default function DashboardApp() {
 
   return (
     <Page title="Dashboard">
-      <EquipmentScan />
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
           Welcome

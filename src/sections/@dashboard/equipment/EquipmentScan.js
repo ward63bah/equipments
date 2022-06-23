@@ -1,22 +1,42 @@
 import React, { useState } from 'react';
 import { QrReader } from 'react-qr-reader';
-import { Button } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogTitle, DialogContent } from '@mui/material';
 import Iconify from '../../../components/Iconify';
 
 export default function EquipmentScan(props) {
   const [data, setData] = useState('No result');
-  const [scan, setScan] = useState(false);
+  const [open, setOpen] = useState(false);
+  const constraints = {
+    facingMode: { exact: 'environment' },
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
-      {scan === false ? (
-        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => setScan(true)}>
-          Scan
-        </Button>
-      ) : (
-        <>
+      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
+        Scan
+      </Button>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle id="alert-dialog-title">QR SCANNER</DialogTitle>
+        <DialogContent>
+          <p>{data}</p>
           <QrReader
-            facingMode="environment"
+            constraints={constraints}
             onResult={(result, error) => {
               if (!result) {
                 setData(result?.text);
@@ -27,15 +47,14 @@ export default function EquipmentScan(props) {
                 console.info(error);
               }
             }}
-            // style={{ width: '100%' }}
-            style={{ width: '200px', heigth: '100px' }}
+            style={{ width: '50vw', heigth: '50vh' }}
+            // style={{ width: '200px', heigth: '100px' }}
           />
-          <p>{data}</p>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => setScan(false)}>
-            Close
-          </Button>
-        </>
-      )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

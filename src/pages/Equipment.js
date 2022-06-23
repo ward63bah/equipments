@@ -44,6 +44,7 @@ import EquipmentListToolbar from '../sections/@dashboard/equipment/EquipmentList
 import EquipmentListHead from '../sections/@dashboard/equipment/EquipmentListHead';
 import EquipmentTypeSelector from '../sections/@dashboard/equipment_type/EquipmentTypeSelector';
 import EquipmentStatusSelector from '../sections/@dashboard/equipment/EquipmentStatusSelector';
+import EquipmentScan from '../sections/@dashboard/equipment/EquipmentScan';
 
 // mock
 // import { equipmentTypes } from '../_mock/equipment_types';
@@ -118,6 +119,7 @@ export default function Equipment(props) {
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New Equipment
           </Button>
+          <EquipmentScan />
         </Stack>
 
         <Card>
