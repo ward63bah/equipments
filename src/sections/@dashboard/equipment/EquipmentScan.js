@@ -7,6 +7,7 @@ export default function EquipmentScan(props) {
   const { equipment, equipments, onSelected, onScanQR } = props;
   const [data, setData] = useState('No result');
   const [open, setOpen] = useState(false);
+  const [matched, setMatched] = useState(false);
   //   const [equipment, setEquipment] = useState();
 
   const constraints = {
@@ -20,6 +21,7 @@ export default function EquipmentScan(props) {
   const handleClose = () => {
     setOpen(false);
     setData('No result');
+    setMatched(false);
   };
 
   const onFindEquipment = useCallback(
@@ -27,6 +29,7 @@ export default function EquipmentScan(props) {
       const index = equipments.findIndex((e) => e.sn === sn);
       if (index !== -1) {
         setData(sn);
+        setMatched(true);
         onScanQR(equipments[index]);
         //   setEquipment(equipments[index]);
       }
@@ -65,35 +68,44 @@ export default function EquipmentScan(props) {
                   console.info(error);
                 }
               }}
-              style={{ width: '50vw', heigth: '50vh' }}
+              style={{ width: '50vw', height: '50vh' }}
+              scanDelay={500}
               // style={{ width: '200px', heigth: '100px' }}
             />
           ) : (
             <>
-              <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
-                <Button
-                  // component={Link}
-                  target="_blank"
-                  // href="https://mantisdashboard.io"
-                  variant="contained"
-                  color="success"
-                  size="small"
-                  onClick={() => onSelected('edit', equipment)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  // component={Link}
-                  target="_blank"
-                  // href="https://mantisdashboard.io"
-                  variant="contained"
-                  color="warning"
-                  size="small"
-                  onClick={() => onSelected('history', equipment)}
-                >
-                  History
-                </Button>
-              </Stack>
+              {matched === true ? (
+                <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
+                  <Button
+                    // component={Link}
+                    target="_blank"
+                    // href="https://mantisdashboard.io"
+                    variant="contained"
+                    color="success"
+                    size="small"
+                    onClick={() => onSelected('edit', equipment)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    // component={Link}
+                    target="_blank"
+                    // href="https://mantisdashboard.io"
+                    variant="contained"
+                    color="warning"
+                    size="small"
+                    onClick={() => onSelected('history', equipment)}
+                  >
+                    History
+                  </Button>
+                </Stack>
+              ) : (
+                <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
+                  <Typography variant="h5" gutterBottom>
+                    No Equipment Matched
+                  </Typography>
+                </Stack>
+              )}
             </>
           )}
         </DialogContent>

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { filter } from 'lodash';
+import { filter, orderBy } from 'lodash';
 import { useCallback, useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -35,6 +35,7 @@ import NewRepairing from '../sections/repairing/NewRepairing';
 import EquipmentStatusHistory from '../sections/@dashboard/equipment/EquipmentStatusHistory';
 
 function descendingComparator(a, b, orderBy) {
+  console.log('type/status/name', a, b, orderBy);
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -50,7 +51,7 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array, comparator, query) {
+function applySortFilter(orderBy, array, comparator, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -58,7 +59,12 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    if (orderBy === 'name') {
+      return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    }
+    if (orderBy === 'sn') {
+      return filter(array, (_user) => _user.sn.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    }
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -81,11 +87,12 @@ export default function DashboardApp() {
   const [filterType, setFilterType] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
 
-  console.log('type/status/name', filterType, filterStatus, filterName);
+  console.log('equipments', equipments, _equipments);
 
   const handleFilterByType = useCallback(
     (type) => {
-      if (filterType !== '') {
+      setFilterType(type);
+      if (type !== '') {
         if (equipments.length !== _equipments.length && (filterStatus !== '' || filterName !== '')) {
           setEquipments(equipments.filter((e) => e.typeId === type));
         } else {
@@ -93,21 +100,20 @@ export default function DashboardApp() {
         }
       }
 
-      if (filterType === '') {
-        if (filterStatus !== '' || filterName !== '') {
+      if (type === '') {
+        if (equipments.length !== _equipments.length && (filterStatus !== '' || filterName !== '')) {
           setEquipments(equipments);
         } else {
           setEquipments(_equipments);
         }
       }
-      setFilterType(type);
     },
     [setFilterType, setEquipments, equipments, _equipments, filterName, filterStatus]
   );
 
   const handleFilterByStatus = useCallback(
     (status) => {
-      if (filterStatus !== '') {
+      if (status !== '') {
         if (equipments.length !== _equipments.length && (filterType !== '' || filterName !== '')) {
           setEquipments(equipments.filter((e) => e.status === status));
         } else {
@@ -115,7 +121,7 @@ export default function DashboardApp() {
         }
       }
 
-      if (filterStatus === '') {
+      if (status === '') {
         if (equipments.length !== _equipments.length && (filterType !== '' || filterName !== '')) {
           setEquipments(equipments);
         } else {
@@ -130,15 +136,16 @@ export default function DashboardApp() {
 
   const handleFilterByName = useCallback(
     (event, order, orderBy) => {
-      console.log('search/', event.target.value, order, orderBy);
       if (equipments.length !== _equipments.length && (filterType !== '' || filterStatus !== '')) {
-        setEquipments(applySortFilter(equipments, getComparator(order, orderBy), event.target.value));
+        setEquipments(applySortFilter(orderBy, equipments, getComparator(order, orderBy), event.target.value));
       } else {
-        setEquipments(applySortFilter(_equipments, getComparator(order, orderBy), event.target.value));
+        setEquipments(applySortFilter(orderBy, _equipments, getComparator(order, orderBy), event.target.value));
       }
       setFilterName(event.target.value);
+      setOrder(order);
+      setOrderBy(orderBy);
     },
-    [setFilterName, setEquipment, equipments, _equipments]
+    [setFilterName, setOrder, setOrderBy, setEquipment, equipments, _equipments]
   );
 
   const handleUpdateEquipment = useCallback(
@@ -201,34 +208,43 @@ export default function DashboardApp() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="All Equipment" total={equipments?.length} icon={'ant-design:android-filled'} />
+          <Grid item xs={12} sm={6} md={4}>
+            <AppWidgetSummary title="All Equipment" total={equipments?.length} icon={'maki:doctor'} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AppWidgetSummary
               title="Available"
-              total={equipments?.filter((e) => e.status === 'available').length}
-              color="info"
-              icon={'ant-design:apple-filled'}
+              total={_equipments?.filter((e) => e.status === 'available').length}
+              color="success"
+              icon={'fluent:presence-available-10-filled'}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AppWidgetSummary
               title="Repairing"
               total={equipments?.filter((e) => e.status === 'repairing').length}
               color="warning"
-              icon={'ant-design:windows-filled'}
+              icon={'icon-park-solid:repair'}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AppWidgetSummary
               title="Out Of Service"
               total={equipments?.filter((e) => e.status === 'out of service').length}
               color="error"
-              icon={'ant-design:bug-filled'}
+              icon={'clarity:no-access-solid'}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={2}>
+            <AppWidgetSummary
+              title="Delete"
+              total={equipments?.filter((e) => e.status === 'delete').length}
+              color="info"
+              icon={'fluent:delete-20-filled'}
             />
           </Grid>
 

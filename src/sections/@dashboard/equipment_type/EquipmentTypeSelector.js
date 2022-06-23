@@ -18,7 +18,7 @@ export default function EquipmentTypeSelector(props) {
   return (
     <Box sx={{ minWidth: 250 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">All</InputLabel>
+        <InputLabel id="demo-simple-select-label">Type</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"

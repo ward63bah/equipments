@@ -20,7 +20,7 @@ export const equipments = [
   {
     sn: 'SH619470046SA',
     name: 'CARESCAPE V100',
-    typeId: '6515357479778',
+    typeId: '6515357479777',
     status: 'available',
   },
   {
@@ -31,8 +31,8 @@ export const equipments = [
   },
   {
     sn: 'KQ-4022425',
-    name: 'MINDARY (model uMEC12)',
-    typeId: '6515357472293',
+    name: 'MINDARY (medel uMEC12)',
+    typeId: '6515357472292',
     status: 'available',
   },
   {
@@ -56,43 +56,43 @@ export const equipments = [
   {
     sn: '19W47826',
     name: '3M Litman classic ll',
-    typeId: '6515357473793',
+    typeId: '6515357473792',
     status: 'available',
   },
   {
     sn: 'M12K18496',
     name: '3M Litman cardiology lll',
-    typeId: '6515357473794',
+    typeId: '6515357473792',
     status: 'available',
   },
   {
     sn: 'VRA08990LG',
     name: 'Amvex',
-    typeId: '6515357473657',
+    typeId: '6515357473697',
     status: 'available',
   },
   {
     sn: 'VRA08216IJ',
     name: 'Amvex',
-    typeId: '6515357473658',
+    typeId: '6515357473697',
     status: 'available',
   },
   {
     sn: 'VRA08274BK',
     name: 'Amvex',
-    typeId: '6515357473659',
+    typeId: '6515357473697',
     status: 'available',
   },
   {
     sn: '000458',
     name: 'Precision medical',
-    typeId: '6515357473660',
+    typeId: '6515357473697',
     status: 'available',
   },
   {
     sn: 'VRA09188LM',
     name: 'Amvex',
-    typeId: '6515357473661',
+    typeId: '6515357473697',
     status: 'available',
   },
   {
@@ -122,25 +122,25 @@ export const equipments = [
   {
     sn: '0434',
     name: 'PAHSCO',
-    typeId: '6680357598850',
+    typeId: '6680357598849',
     status: 'available',
   },
   {
     sn: 'AHEF20939',
     name: 'OHMEDA',
-    typeId: '6680357598851',
+    typeId: '6680357598849',
     status: 'available',
   },
   {
     sn: 'SM1/8149',
     name: 'Timeter',
-    typeId: '6680357598852',
+    typeId: '6680357598849',
     status: 'available',
   },
   {
     sn: '456',
     name: 'Timeter',
-    typeId: '6680357598853',
+    typeId: '6680357598849',
     status: 'available',
   },
   {
@@ -152,13 +152,13 @@ export const equipments = [
   {
     sn: '16053344A',
     name: 'RTM3',
-    typeId: '6680357599168',
+    typeId: '6680357599167',
     status: 'available',
   },
   {
     sn: '13056427A',
     name: 'RTM3',
-    typeId: '6680357599169',
+    typeId: '6680357599167',
     status: 'available',
   },
   {
@@ -170,13 +170,13 @@ export const equipments = [
   {
     sn: 'BDLS00066',
     name: 'Ohio',
-    typeId: '6515357474068',
+    typeId: '6515357474067',
     status: 'available',
   },
   {
     sn: 'BDLS00068',
     name: 'Ohio',
-    typeId: '6515357474069',
+    typeId: '6515357474067',
     status: 'available',
   },
 ];

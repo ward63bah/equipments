@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -53,7 +53,8 @@ import EquipmentScan from '../sections/@dashboard/equipment/EquipmentScan';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'type', label: 'TYPE', alignRight: false },
+  { id: 'type-id', label: 'TYPE ID', alignRight: false },
+  { id: 'type', label: 'TYPE NAME', alignRight: false },
   { id: 'id', label: 'SN', alignRight: false },
   { id: 'name', label: 'NAME', alignRight: false },
   { id: 'status', label: 'STATUS', alignRight: false },
@@ -83,6 +84,20 @@ export default function Equipment(props) {
 
   const [rowsPerPage, setRowsPerPage] = useState(equipments?.length);
 
+  const statusColor = (status) => {
+    let color = 'gray';
+    if (status === 'available') {
+      color = 'green';
+    } else if (status === 'repairing') {
+      color = 'orange';
+    } else if (status === 'out of service') {
+      color = 'red';
+    } else {
+      color = 'gray';
+    }
+    return color;
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -111,7 +126,7 @@ export default function Equipment(props) {
           </Button>
         </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={3} spacing={1}>
+        <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={3} spacing={1}>
           <Typography variant="h6" gutterBottom>
             Type :
           </Typography>
@@ -169,21 +184,35 @@ export default function Equipment(props) {
                           // selected={isItemSelected}
                           // aria-checked={isItemSelected}
                         >
-                          <TableCell align="left">{equipmentTypes?.find((e) => e.id === typeId)?.name}</TableCell>
-                          <TableCell component="th" id={sn} scope="row" align="left">
-                            {sn}
+                          <TableCell align="left">
+                            <Typography>{equipmentTypes?.find((e) => e.id === typeId)?.id}</Typography>
                           </TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{status}</TableCell>
+                          <TableCell align="left">
+                            <Typography>{equipmentTypes?.find((e) => e.id === typeId)?.name}</Typography>
+                          </TableCell>
+                          <TableCell component="th" id={sn} scope="row" align="left">
+                            <Typography>{sn}</Typography>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Typography>{name}</Typography>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Typography color={statusColor(status)}>
+                              <Iconify icon="carbon:dot-mark" />
+                              {status?.toUpperCase()}
+                            </Typography>
+                          </TableCell>
                           <TableCell align="left">
                             <Button
                               // component={Link}
                               target="_blank"
                               // href="https://mantisdashboard.io"
                               variant="contained"
-                              color="success"
+                              color="primary"
                               size="small"
+                              disabled={status === 'delete'}
                               onClick={() => onSelected('edit', row)}
+                              startIcon={<Iconify icon="bxs:message-square-edit" />}
                             >
                               Edit
                             </Button>
@@ -197,6 +226,7 @@ export default function Equipment(props) {
                               color="warning"
                               size="small"
                               onClick={() => onSelected('history', row)}
+                              startIcon={<Iconify icon="fa-solid:history" />}
                             >
                               History
                             </Button>

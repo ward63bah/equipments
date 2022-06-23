@@ -96,7 +96,7 @@ export default function EquipmentStatusHistory(props) {
             <Card>
               <Scrollbar>
                 <TableContainer sx={{ minWidth: 800, maxHeight: 500 }}>
-                  <Table>
+                  <Table stickyHeader>
                     <EquipmentHistoryHead
                       order={order}
                       orderBy={orderBy}

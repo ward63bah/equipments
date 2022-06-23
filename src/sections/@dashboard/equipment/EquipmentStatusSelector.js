@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const statusList = ['available', 'repairing', 'out of service'];
+const statusList = ['available', 'repairing', 'out of service', 'delete'];
 export default function EquipmentStatusSelector(props) {
   const { latestStatus, onFilterStatus } = props;
   const [status, setStatus] = useState('');
@@ -20,7 +20,7 @@ export default function EquipmentStatusSelector(props) {
     <Box sx={{ minWidth: 200 }}>
       {latestStatus === undefined ? (
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">All</InputLabel>
+          <InputLabel id="demo-simple-select-label">Status</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -31,13 +31,13 @@ export default function EquipmentStatusSelector(props) {
           >
             <MenuItem value={''}>All</MenuItem>;
             {statusList?.map((status) => {
-              return <MenuItem value={status}>{status}</MenuItem>;
+              return <MenuItem value={status}>{status.toUpperCase()}</MenuItem>;
             })}
           </Select>
         </FormControl>
       ) : (
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">select status</InputLabel>
+          <InputLabel id="demo-simple-select-label">Status</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -50,7 +50,7 @@ export default function EquipmentStatusSelector(props) {
             {statusList
               ?.filter((status) => status !== latestStatus)
               .map((status) => {
-                return <MenuItem value={status}>{status}</MenuItem>;
+                return <MenuItem value={status}>{status.toUpperCase()}</MenuItem>;
               })}
           </Select>
         </FormControl>

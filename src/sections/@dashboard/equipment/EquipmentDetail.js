@@ -90,15 +90,31 @@ export default function EquipmentDetail(props) {
 
   const [status, setStatus] = useState('');
   const [description, setDescription] = useState('');
+  const [curDate, setCurDate] = useState(new Date());
 
   const handleUpdateEquipment = () => {
-    onUpdateEquipment({ ...equipment, status, date: new Date(), description });
+    onUpdateEquipment({ ...equipment, status, date: curDate, description });
     onCloseDialog();
   };
 
   const handleDeleteEquipment = () => {
-    onDeleteEquipment(equipment.sn);
+    // onDeleteEquipment(equipment.sn);
+    onUpdateEquipment({ ...equipment, status: 'delete', date: curDate, description });
     onCloseDialog();
+  };
+
+  const statusColor = (status) => {
+    let color = 'gray';
+    if (status === 'available') {
+      color = 'green';
+    } else if (status === 'repairing') {
+      color = 'orange';
+    } else if (status === 'out of service') {
+      color = 'red';
+    } else {
+      color = 'gray';
+    }
+    return color;
   };
 
   return (
@@ -117,7 +133,7 @@ export default function EquipmentDetail(props) {
               <img
                 src={images[`${equipment.sn}.jpg`]}
                 alt={equipment.name}
-                style={{ width: '30vw', height: '30vh', align: 'center' }}
+                style={{ width: '30vw', maxHeight: '50vh', align: 'center' }}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -158,7 +174,7 @@ export default function EquipmentDetail(props) {
                     id="outlined-basic"
                     label=""
                     variant="outlined"
-                    value={latest ? latest.status : equipment.status}
+                    value={latest ? latest.status.toUpperCase() : equipment.status.toUpperCase()}
                     disabled
                     fullWidth
                   />
@@ -188,7 +204,7 @@ export default function EquipmentDetail(props) {
             {equipment.status !== 'out of service' && (
               <>
                 <Grid item xs={12} sm={12} md={12} lg={2} style={{ alignItems: 'center', alignSelf: 'center' }}>
-                  <Button variant="" startIcon={<Iconify icon="carbon:direction-straight-right" />} disabled>
+                  <Button variant="text" size="large" endIcon={<Iconify icon="carbon:direction-straight-right" />}>
                     Change
                   </Button>
                 </Grid>
@@ -206,10 +222,11 @@ export default function EquipmentDetail(props) {
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                       <TextField
                         id="outlined-basic"
+                        type="date"
                         label=""
                         variant="outlined"
-                        value={new Date()}
-                        disabled
+                        value={curDate}
+                        onChange={(e) => setCurDate(e.target.value)}
                         fullWidth
                       />
                     </Grid>
@@ -233,6 +250,7 @@ export default function EquipmentDetail(props) {
         <DialogActions>
           {equipment.status === 'out of service' ? (
             <Button autoFocus variant="contained" color="error" onClick={handleDeleteEquipment}>
+              {/* <Button autoFocus variant="contained" color="error" onClick={handleUpdateEquipment}> */}
               Delete Equipment
             </Button>
           ) : (
