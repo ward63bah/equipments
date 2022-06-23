@@ -93,6 +93,14 @@ export default function Equipment(props) {
             Equipments
           </Typography>
         </Stack>
+
+        <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={3} spacing={1}>
+          <EquipmentScan equipments={equipments} onSelected={onSelected} />
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+            New Equipment
+          </Button>
+        </Stack>
+
         <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={3} spacing={1}>
           <Typography variant="h6" gutterBottom>
             Type :
@@ -116,10 +124,6 @@ export default function Equipment(props) {
             filterName={filterName}
             onFilterName={(e) => onFilterName(e, order, orderBy)}
           />
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Equipment
-          </Button>
-          <EquipmentScan equipments={equipments} onSelected={onSelected} />
         </Stack>
 
         <Card>

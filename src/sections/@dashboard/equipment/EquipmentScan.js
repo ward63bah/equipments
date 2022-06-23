@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QrReader } from 'react-qr-reader';
-import { Button, Dialog, DialogActions, DialogTitle, DialogContent, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogTitle, DialogContent, Typography, Stack } from '@mui/material';
 import Iconify from '../../../components/Iconify';
 
 export default function EquipmentScan(props) {
@@ -33,8 +33,8 @@ export default function EquipmentScan(props) {
 
   return (
     <>
-      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
-        Scan
+      <Button variant="contained" startIcon={<Iconify icon="fluent:qr-code-20-regular" />} onClick={handleClickOpen}>
+        Scan QR
       </Button>
 
       <Dialog
@@ -67,28 +67,30 @@ export default function EquipmentScan(props) {
             />
           ) : (
             <>
-              <Button
-                // component={Link}
-                target="_blank"
-                // href="https://mantisdashboard.io"
-                variant="contained"
-                color="success"
-                size="small"
-                onClick={() => onSelected('edit', equipment)}
-              >
-                Edit
-              </Button>
-              <Button
-                // component={Link}
-                target="_blank"
-                // href="https://mantisdashboard.io"
-                variant="contained"
-                color="warning"
-                size="small"
-                onClick={() => onSelected('history', equipment)}
-              >
-                History
-              </Button>
+              <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
+                <Button
+                  // component={Link}
+                  target="_blank"
+                  // href="https://mantisdashboard.io"
+                  variant="contained"
+                  color="success"
+                  size="small"
+                  onClick={() => onSelected('edit', equipment)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  // component={Link}
+                  target="_blank"
+                  // href="https://mantisdashboard.io"
+                  variant="contained"
+                  color="warning"
+                  size="small"
+                  onClick={() => onSelected('history', equipment)}
+                >
+                  History
+                </Button>
+              </Stack>
             </>
           )}
         </DialogContent>
