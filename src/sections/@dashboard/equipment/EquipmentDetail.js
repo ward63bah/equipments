@@ -188,7 +188,7 @@ export default function EquipmentDetail(props) {
             {equipment.status !== 'out of service' && (
               <>
                 <Grid item xs={12} sm={12} md={12} lg={2} style={{ alignItems: 'center', alignSelf: 'center' }}>
-                  <Button variant="contained" startIcon={<Iconify icon="carbon:direction-straight-right" />}>
+                  <Button variant="" startIcon={<Iconify icon="carbon:direction-straight-right" />} disabled>
                     Change
                   </Button>
                 </Grid>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { QrReader } from 'react-qr-reader';
 import { Button, Dialog, DialogActions, DialogTitle, DialogContent, Typography, Stack } from '@mui/material';
 import Iconify from '../../../components/Iconify';
@@ -22,14 +22,17 @@ export default function EquipmentScan(props) {
     setData('No result');
   };
 
-  const onFindEquipment = (sn) => {
-    const index = equipments.findIndex((e) => e.sn === sn);
-    if (index !== -1) {
-      setData(sn);
-      onScanQR(equipments[index]);
-      //   setEquipment(equipments[index]);
-    }
-  };
+  const onFindEquipment = useCallback(
+    (sn) => {
+      const index = equipments.findIndex((e) => e.sn === sn);
+      if (index !== -1) {
+        setData(sn);
+        onScanQR(equipments[index]);
+        //   setEquipment(equipments[index]);
+      }
+    },
+    [equipments]
+  );
 
   return (
     <>
