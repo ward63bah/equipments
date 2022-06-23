@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
+  Grid,
   Card,
   Table,
   Stack,
@@ -21,6 +22,11 @@ import {
   Link,
   Collapse,
   Box,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
 } from '@mui/material';
 
 // icons
@@ -37,6 +43,7 @@ import EquipmentDialog from '../sections/@dashboard/equipment/EquipmentDialog';
 import EquipmentListToolbar from '../sections/@dashboard/equipment/EquipmentListToolbar';
 import EquipmentListHead from '../sections/@dashboard/equipment/EquipmentListHead';
 import EquipmentTypeSelector from '../sections/@dashboard/equipment_type/EquipmentTypeSelector';
+import EquipmentStatusSelector from '../sections/@dashboard/equipment/EquipmentStatusSelector';
 
 // mock
 // import { equipmentTypes } from '../_mock/equipment_types';
@@ -57,7 +64,8 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function Equipment(props) {
-  const { equipments, equipmentTypes, filterName, selected, onSelected } = props;
+  const { equipments, equipmentTypes, filterName, selected, onSelected, onFilterType, onFilterStatus, onFilterName } =
+    props;
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
@@ -79,10 +87,37 @@ export default function Equipment(props) {
   return (
     <Page title="User">
       <Container maxWidth="xl" fixed>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
           <Typography variant="h4" gutterBottom>
             Equipments
           </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={3} spacing={1}>
+          <Typography variant="h6" gutterBottom>
+            Type :
+          </Typography>
+          <EquipmentTypeSelector equipmentTypes={equipmentTypes} onFilterType={onFilterType} />
+          <Typography variant="h6" gutterBottom>
+            Status :
+          </Typography>
+          <EquipmentStatusSelector onFilterStatus={onFilterStatus} />
+          <Typography variant="h6" gutterBottom>
+            Search By :
+          </Typography>
+          <FormControl onChange={(e) => setOrderBy(e.target.value)}>
+            <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
+              <FormControlLabel value="sn" control={<Radio />} label="SN" />
+              <FormControlLabel value="name" control={<Radio />} label="Name" />
+            </RadioGroup>
+          </FormControl>
+          <EquipmentListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={(e) => onFilterName(e, order, orderBy)}
+          />
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+            New Equipment
+          </Button>
         </Stack>
 
         <Card>
@@ -95,7 +130,7 @@ export default function Equipment(props) {
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800, maxHeight: 500 }}>
-              <Table>
+              <Table stickyHeader>
                 <EquipmentListHead
                   order={order}
                   orderBy={orderBy}

@@ -16,7 +16,7 @@ export default function EquipmentTypeSelector(props) {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 250 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">All</InputLabel>
         <Select
@@ -24,7 +24,6 @@ export default function EquipmentTypeSelector(props) {
           id="demo-simple-select"
           value={type}
           label="Type"
-          disabled
           onChange={handlerFilterByType}
         >
           <MenuItem value={''}>All</MenuItem>;

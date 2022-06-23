@@ -9,6 +9,7 @@ import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import EquipmentCalibrate from './EquipmentCalibrate';
 import EquipmentDetail from '../sections/@dashboard/equipment/EquipmentDetail';
+import EquipmentScan from '../sections/@dashboard/equipment/EquipmentScan';
 
 // sections
 import {
@@ -83,40 +84,62 @@ export default function DashboardApp() {
 
   console.log('type/status/name', filterType, filterStatus, filterName);
 
-  const handleFilterByName = useCallback(
-    (event) => {
-      if (event.target.value === '' && filterType === '' && filterStatus === '') {
-        setEquipments(_equipments);
-      } else {
-        setEquipments(applySortFilter(equipments, getComparator(order, orderBy), event.target.value));
-      }
-      setFilterName(event.target.value);
-    },
-    [setFilterName, setEquipment, equipments]
-  );
-
   const handleFilterByType = useCallback(
     (type) => {
-      if (type === '' && filterName === '' && filterStatus === '') {
-        setEquipments(_equipments);
-      } else {
-        setEquipments(equipments.filter((e) => e.typeId === type));
+      if (filterType !== '') {
+        if (equipments.length !== _equipments.length && (filterStatus !== '' || filterName !== '')) {
+          setEquipments(equipments.filter((e) => e.typeId === type));
+        } else {
+          setEquipments(_equipments.filter((e) => e.typeId === type));
+        }
+      }
+
+      if (filterType === '') {
+        if (filterStatus !== '' || filterName !== '') {
+          setEquipments(equipments);
+        } else {
+          setEquipments(_equipments);
+        }
       }
       setFilterType(type);
     },
-    [setFilterType, setEquipments, equipments]
+    [setFilterType, setEquipments, equipments, _equipments, filterName, filterStatus]
   );
 
   const handleFilterByStatus = useCallback(
     (status) => {
-      if (status === '' && filterName === '' && filterType === '') {
-        setEquipment(_equipments);
-      } else {
-        setEquipments(equipments.filter((e) => e.status === status));
+      if (filterStatus !== '') {
+        if (equipments.length !== _equipments.length && (filterType !== '' || filterName !== '')) {
+          setEquipments(equipments.filter((e) => e.status === status));
+        } else {
+          setEquipments(_equipments.filter((e) => e.status === status));
+        }
       }
+
+      if (filterStatus === '') {
+        if (equipments.length !== _equipments.length && (filterType !== '' || filterName !== '')) {
+          setEquipments(equipments);
+        } else {
+          setEquipments(_equipments);
+        }
+      }
+
       setFilterStatus(status);
     },
-    [setFilterStatus, setEquipments, equipments]
+    [setFilterStatus, setEquipments, equipments, _equipments, filterType, filterName]
+  );
+
+  const handleFilterByName = useCallback(
+    (event, order, orderBy) => {
+      console.log('search/', event.target.value, order, orderBy);
+      if (equipments.length !== _equipments.length && (filterType !== '' || filterStatus !== '')) {
+        setEquipments(applySortFilter(equipments, getComparator(order, orderBy), event.target.value));
+      } else {
+        setEquipments(applySortFilter(_equipments, getComparator(order, orderBy), event.target.value));
+      }
+      setFilterName(event.target.value);
+    },
+    [setFilterName, setEquipment, equipments, _equipments]
   );
 
   const handleUpdateEquipment = useCallback(
@@ -166,6 +189,7 @@ export default function DashboardApp() {
 
   return (
     <Page title="Dashboard">
+      <EquipmentScan />
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
           Welcome
@@ -203,44 +227,6 @@ export default function DashboardApp() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={12} md={12}>
-            <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
-              <Grid item xs={12} sm={12} md={9}>
-                <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
-                  <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <EquipmentTypeSelector equipmentTypes={equipmentTypes} onFilterType={handleFilterByType} />
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <EquipmentStatusSelector onFilterStatus={handleFilterByStatus} />
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <EquipmentListToolbar
-                      numSelected={selected.length}
-                      filterName={filterName}
-                      onFilterName={handleFilterByName}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={12} sm={12} md={3}>
-                <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
-                  <Grid item xs={12} sm={12} md={6} lg={6}>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-                      New Equipment
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={6} lg={6}>
-                    {/* <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-                      New repairing
-                    </Button> */}
-                    {/* <NewRepairing equipments={equipments} onAddRepairing={handleAddRepairing} /> */}
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-
           <Grid item xs={12} md={12} lg={12}>
             {/* <EquipmentTypes onSelected={onSelected} /> */}
             <Equipment
@@ -249,6 +235,9 @@ export default function DashboardApp() {
               filterName={filterName}
               selected={selected}
               onSelected={onSelected}
+              onFilterType={handleFilterByType}
+              onFilterStatus={handleFilterByStatus}
+              onFilterName={handleFilterByName}
             />
             {show && state === 'edit' && (
               <EquipmentDetail

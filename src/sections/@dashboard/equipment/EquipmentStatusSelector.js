@@ -17,7 +17,7 @@ export default function EquipmentStatusSelector(props) {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 200 }}>
       {latestStatus === undefined ? (
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">All</InputLabel>
@@ -28,7 +28,6 @@ export default function EquipmentStatusSelector(props) {
             label="status"
             autoFocus
             onChange={handlerFilterByStatus}
-            disabled
           >
             <MenuItem value={''}>All</MenuItem>;
             {statusList?.map((status) => {

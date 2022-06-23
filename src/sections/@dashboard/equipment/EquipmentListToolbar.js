@@ -36,6 +36,7 @@ EquipmentListToolbar.propTypes = {
 };
 
 export default function EquipmentListToolbar({ numSelected, filterName, onFilterName }) {
+  console.log('search', filterName);
   return (
     <SearchStyle
       id="outlined-basic"
@@ -44,7 +45,7 @@ export default function EquipmentListToolbar({ numSelected, filterName, onFilter
       fullWidth
       value={filterName}
       onChange={onFilterName}
-      placeholder="ค้นหาพัสดุ..."
+      placeholder="Search..."
       startAdornment={
         <InputAdornment position="start">
           <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
