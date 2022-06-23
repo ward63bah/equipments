@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QrReader } from 'react-qr-reader';
-import { Button, Dialog, DialogActions, DialogTitle, DialogContent } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogTitle, DialogContent, Typography } from '@mui/material';
 import Iconify from '../../../components/Iconify';
 
 export default function EquipmentScan(props) {
@@ -34,16 +34,16 @@ export default function EquipmentScan(props) {
       >
         <DialogTitle id="alert-dialog-title">QR SCANNER</DialogTitle>
         <DialogContent>
-          <p>{data}</p>
+          <Typography>{data}</Typography>
           <QrReader
             constraints={constraints}
             onResult={(result, error) => {
-              if (!result) {
+              if (result !== undefined) {
                 setData(result?.text);
-                console.log('scan', result);
+                console.log('scan', result?.text);
               }
 
-              if (!error) {
+              if (error !== undefined) {
                 console.info(error);
               }
             }}
