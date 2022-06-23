@@ -66,7 +66,7 @@ export default function EquipmentDetail(props) {
           date: e.date.toString(),
         };
       });
-    return data[data.length - 1];
+    return data.length > 0 ? data[data.length - 1] : equipment;
   }, [equipment, equipmentsHistory]);
 
   function importAll(r) {

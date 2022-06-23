@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { filter, orderBy } from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography, Button } from '@mui/material';
@@ -73,6 +74,8 @@ function applySortFilter(orderBy, array, comparator, query) {
 
 export default function DashboardApp() {
   const theme = useTheme();
+  const { sn } = useParams();
+  // console.log('sn', sn);
 
   const [show, setShow] = useState(false);
   const [state, setState] = useState('');
@@ -87,7 +90,13 @@ export default function DashboardApp() {
   const [filterType, setFilterType] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
 
-  console.log('equipments', equipments, _equipments);
+  // console.log('equipments', equipments, _equipments);
+  useEffect(() => {
+    const index = equipments.findIndex((e) => e.sn === sn);
+    if (index !== -1) {
+      onSelected('edit', equipments[index]);
+    }
+  }, [sn]);
 
   const handleFilterByType = useCallback(
     (type) => {
@@ -203,15 +212,15 @@ export default function DashboardApp() {
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
-        <Typography variant="h3" sx={{ mb: 3 }}>
+        {/* <Typography variant="h3" sx={{ mb: 3 }}>
           Welcome
-        </Typography>
+        </Typography> */}
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={4} lg={4}>
+          {/* <Grid item xs={12} sm={12} md={4} lg={4}>
             <AppWidgetSummary title="All Equipment" total={equipments?.length} icon={'maki:doctor'} />
-          </Grid>
-
+          </Grid> */}
+          {/* 
           <Grid item xs={12} sm={12} md={2} lg={2}>
             <AppWidgetSummary
               title="Available"
@@ -219,26 +228,26 @@ export default function DashboardApp() {
               color="success"
               icon={'fluent:presence-available-10-filled'}
             />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} sm={12} md={2} lg={2}>
+          {/* <Grid item xs={12} sm={12} md={2} lg={2}>
             <AppWidgetSummary
               title="Repairing"
               total={equipments?.filter((e) => e.status === 'repairing').length}
               color="warning"
               icon={'icon-park-solid:repair'}
             />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} sm={12} md={2} lg={2}>
+          {/* <Grid item xs={12} sm={12} md={2} lg={2}>
             <AppWidgetSummary
               title="Out Of Service"
               total={equipments?.filter((e) => e.status === 'out of service').length}
               color="error"
               icon={'clarity:no-access-solid'}
             />
-          </Grid>
-
+          </Grid> */}
+          {/* 
           <Grid item xs={12} sm={12} md={2} lg={2}>
             <AppWidgetSummary
               title="Delete"
@@ -246,7 +255,7 @@ export default function DashboardApp() {
               color="info"
               icon={'fluent:delete-20-filled'}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={12} lg={12}>
             {/* <EquipmentTypes onSelected={onSelected} /> */}
