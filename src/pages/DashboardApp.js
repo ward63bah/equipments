@@ -203,16 +203,16 @@ export default function DashboardApp() {
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
+        <Typography variant="h3" sx={{ mb: 3 }}>
           Welcome
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={12} md={4} lg={4}>
             <AppWidgetSummary title="All Equipment" total={equipments?.length} icon={'maki:doctor'} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={12} md={2} lg={2}>
             <AppWidgetSummary
               title="Available"
               total={_equipments?.filter((e) => e.status === 'available').length}
@@ -221,7 +221,7 @@ export default function DashboardApp() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={12} md={2} lg={2}>
             <AppWidgetSummary
               title="Repairing"
               total={equipments?.filter((e) => e.status === 'repairing').length}
@@ -230,7 +230,7 @@ export default function DashboardApp() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={12} md={2} lg={2}>
             <AppWidgetSummary
               title="Out Of Service"
               total={equipments?.filter((e) => e.status === 'out of service').length}
@@ -239,7 +239,7 @@ export default function DashboardApp() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={12} md={2} lg={2}>
             <AppWidgetSummary
               title="Delete"
               total={equipments?.filter((e) => e.status === 'delete').length}

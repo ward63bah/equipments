@@ -113,20 +113,57 @@ export default function Equipment(props) {
   return (
     <Page title="User">
       <Container maxWidth="xl" fixed>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-          <Typography variant="h4" gutterBottom>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
+          <Typography variant="h3" gutterBottom>
             Equipments
           </Typography>
         </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={3} spacing={1}>
+        <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={2} spacing={1}>
           <EquipmentScan equipment={equipment} equipments={equipments} onSelected={onSelected} onScanQR={onScanQR} />
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New Equipment
           </Button>
         </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={3} spacing={1}>
+        <Grid item container xs={12} sm={12} md={12} lg={12} justifyContent="flex-start">
+          <Grid item xs={12} sm={12} md={12} lg={3}>
+            <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
+              <Typography variant="h6" gutterBottom>
+                Type :
+              </Typography>
+              <EquipmentTypeSelector equipmentTypes={equipmentTypes} onFilterType={onFilterType} />
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={12} lg={3}>
+            <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
+              <Typography variant="h6" gutterBottom>
+                Status :
+              </Typography>
+              <EquipmentStatusSelector onFilterStatus={onFilterStatus} />
+            </Stack>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={6}>
+            <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
+              <Typography variant="h6" gutterBottom>
+                Search By :
+              </Typography>
+              <FormControl onChange={(e) => setOrderBy(e.target.value)}>
+                <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
+                  <FormControlLabel value="sn" control={<Radio />} label="SN" />
+                  <FormControlLabel value="name" control={<Radio />} label="Name" />
+                </RadioGroup>
+              </FormControl>
+              <EquipmentListToolbar
+                numSelected={selected.length}
+                filterName={filterName}
+                onFilterName={(e) => onFilterName(e, order, orderBy)}
+              />
+            </Stack>
+          </Grid>
+        </Grid>
+        {/* <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
           <Typography variant="h6" gutterBottom>
             Type :
           </Typography>
@@ -149,7 +186,7 @@ export default function Equipment(props) {
             filterName={filterName}
             onFilterName={(e) => onFilterName(e, order, orderBy)}
           />
-        </Stack>
+        </Stack> */}
 
         <Card>
           {/* <EquipmentListToolbar
