@@ -1,10 +1,10 @@
 {
-  "name": "material-kit-react",
+  "name": "equipments",
   "author": "minimals.cc",
   "licence": "MIT",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://stpeyyee.github.io/material-kit-react/",
+  "homepage": "http://ward63bah.github.io/equipments/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

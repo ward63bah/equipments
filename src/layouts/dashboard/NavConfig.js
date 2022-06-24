@@ -13,7 +13,7 @@ const navConfig = [
   // },
   {
     title: 'Equipment',
-    path: '/material-kit-react/equipment',
+    path: '/equipments',
     icon: getIcon('eva:people-fill'),
   },
   // {
