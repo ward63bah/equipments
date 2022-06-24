@@ -2,7 +2,7 @@
 import 'simplebar/src/simplebar.css';
 
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 //
@@ -14,9 +14,12 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <HelmetProvider>
-    <BrowserRouter>
+    {/* <BrowserRouter> */}
+    <HashRouter>
       <App />
-    </BrowserRouter>
+    </HashRouter>
+
+    {/* </BrowserRouter> */}
   </HelmetProvider>,
   document.getElementById('root')
 );
