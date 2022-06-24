@@ -164,9 +164,10 @@ export default function DashboardApp() {
     (obj) => {
       const index = equipments.findIndex((e) => e.sn === obj.sn);
       if (index !== -1) {
+        const convertDate = new Date(obj.date).toISOString().split('T')[0];
         setEquipmentsHistory([
           ...equipmentsHistory,
-          { sn: obj.sn, status: obj.status, date: obj.date, description: obj.description },
+          { sn: obj.sn, status: obj.status, date: convertDate, description: obj.description },
         ]);
         const updateData = [
           ...equipments.slice(0, index),

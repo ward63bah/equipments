@@ -198,7 +198,7 @@ export default function Equipment(props) {
           <EquipmentTypeSelector equipmentTypes={equipmentTypes} /> */}
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800, maxHeight: 500 }}>
+            <TableContainer sx={{ minWidth: 800, maxHeight: 540 }}>
               <Table stickyHeader>
                 <EquipmentListHead
                   order={order}

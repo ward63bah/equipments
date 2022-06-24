@@ -14,7 +14,7 @@ const navConfig = [
   {
     title: 'Equipment',
     path: '',
-    icon: getIcon('eva:people-fill'),
+    icon: getIcon('icon-park-outline:ad-product'),
   },
   // {
   //   title: 'product',

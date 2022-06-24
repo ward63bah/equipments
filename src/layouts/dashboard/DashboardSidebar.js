@@ -12,6 +12,7 @@ import useResponsive from '../../hooks/useResponsive';
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
+import Iconify from '../../components/Iconify';
 //
 import navConfig from './NavConfig';
 
@@ -60,16 +61,17 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
+      {/* <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
         <Logo />
-      </Box>
+      </Box> */}
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
+      <Box sx={{ mb: 5, mx: 2.5, py: 5, display: 'inline-flex' }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
+            <Iconify icon="ic:round-local-hospital" color="#2ECC71" width={30} height={30} />
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+              <Typography variant="h6" sx={{ color: 'text.primary' }}>
                 BAH WARD6/3
               </Typography>
               {/* <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>

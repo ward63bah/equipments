@@ -23,7 +23,9 @@ export default function EquipmentFromLink(props) {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id="alert-dialog-title">QR SCANNER</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h4">QR SCANNER</Typography>
+        </DialogTitle>
         <DialogContent>
           <>
             {equipment !== undefined ? (
@@ -70,7 +72,9 @@ export default function EquipmentFromLink(props) {
           </>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose} variant={'contained'} color="error">
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     </>

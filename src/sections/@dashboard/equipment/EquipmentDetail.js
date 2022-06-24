@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useState, useMemo, useCallback } from 'react';
+import { format } from 'date-fns';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import { Grid, Card, TextField } from '@mui/material';
+import { Grid, Card, TextField, Stack } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -38,6 +39,8 @@ const BootstrapDialogTitle = (props) => {
             position: 'absolute',
             right: 8,
             top: 8,
+            color: 'white',
+            background: 'red',
             // color: (theme) => theme.palette.grey[500],
           }}
         >
@@ -69,6 +72,8 @@ export default function EquipmentDetail(props) {
     return data.length > 0 ? data[data.length - 1] : equipment;
   }, [equipment, equipmentsHistory]);
 
+  console.log('equipment', equipment, latest);
+
   function importAll(r) {
     const images = {};
     r.keys().map((item, index) => {
@@ -93,8 +98,10 @@ export default function EquipmentDetail(props) {
   const [curDate, setCurDate] = useState(new Date());
 
   const handleUpdateEquipment = () => {
-    onUpdateEquipment({ ...equipment, status, date: curDate, description });
-    onCloseDialog();
+    if (curDate && status !== '') {
+      onUpdateEquipment({ ...equipment, status, date: curDate, description });
+      onCloseDialog();
+    }
   };
 
   const handleDeleteEquipment = () => {
@@ -123,17 +130,17 @@ export default function EquipmentDetail(props) {
         Open dialog
       </Button> */}
       <Dialog onClose={handleClose} open={open} maxWidth={'md'}>
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {equipment?.name}
-        </BootstrapDialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h4">{equipment?.name}</Typography>
+        </DialogTitle>
         <DialogContent dividers>
           <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
             <Grid item xs={12} sm={12} md={12} lg={12} align="center">
               {/* <img src={picture} alt={equipment.name} /> */}
               <img
                 src={images[`${equipment.sn}.jpg`]}
-                alt={equipment.name}
-                style={{ width: '30vw', maxHeight: '50vh', align: 'center' }}
+                alt={equipment?.name}
+                style={{ width: '30vw', height: '40vh', align: 'center', border: '1px solid gray', borderRadius: 20 }}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -142,7 +149,7 @@ export default function EquipmentDetail(props) {
                   Serial Number
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={12}>
-                  <TextField id="outlined-basic" label="" variant="outlined" value={equipment.sn} disabled fullWidth />
+                  <TextField id="outlined-basic" label="" variant="outlined" value={equipment?.sn} disabled fullWidth />
                 </Grid>
               </Grid>
             </Grid>
@@ -156,7 +163,7 @@ export default function EquipmentDetail(props) {
                     id="outlined-basic"
                     label=""
                     variant="outlined"
-                    value={equipment.name}
+                    value={equipment?.name}
                     disabled
                     fullWidth
                   />
@@ -174,7 +181,7 @@ export default function EquipmentDetail(props) {
                     id="outlined-basic"
                     label=""
                     variant="outlined"
-                    value={latest ? latest.status.toUpperCase() : equipment.status.toUpperCase()}
+                    defaultValue={latest?.status.toUpperCase()}
                     disabled
                     fullWidth
                   />
@@ -184,7 +191,7 @@ export default function EquipmentDetail(props) {
                     id="outlined-basic"
                     label=""
                     variant="outlined"
-                    value={latest ? latest.date : new Date()}
+                    defaultValue={latest?.date === undefined ? 'No data' : latest?.date}
                     disabled
                     fullWidth
                   />
@@ -194,19 +201,25 @@ export default function EquipmentDetail(props) {
                     id="outlined-basic"
                     label=""
                     variant="outlined"
-                    value={latest ? latest.description : '-'}
+                    defaultValue={latest?.description === undefined ? 'No data' : latest?.description}
                     disabled
                     fullWidth
                   />
                 </Grid>
               </Grid>
             </Grid>
-            {equipment.status !== 'out of service' && (
+            {latest.status !== 'out of service' && (
               <>
-                <Grid item xs={12} sm={12} md={12} lg={2} style={{ alignItems: 'center', alignSelf: 'center' }}>
-                  <Button variant="text" size="large" endIcon={<Iconify icon="carbon:direction-straight-right" />}>
-                    Change
-                  </Button>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={2}
+                  align="center"
+                  style={{ alignItems: 'center', alignSelf: 'center', alignContent: 'center' }}
+                >
+                  <Iconify icon="carbon:direction-straight-right" width={50} height={50} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={5}>
                   <Grid item container xs={12} sm={12} md={12} lg={12} spacing={1}>
@@ -215,7 +228,7 @@ export default function EquipmentDetail(props) {
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                       <EquipmentStatusSelector
-                        latestStatus={equipment.status}
+                        latestStatus={latest?.status}
                         onFilterStatus={(status) => setStatus(status)}
                       />
                     </Grid>
@@ -225,8 +238,17 @@ export default function EquipmentDetail(props) {
                         type="date"
                         label=""
                         variant="outlined"
-                        value={curDate}
-                        onChange={(e) => setCurDate(e.target.value)}
+                        // value={curDate}
+                        value={format(curDate, 'yyyy-MM-dd')}
+                        // onChange={(e) => setCurDate(e.target.value)}
+                        onChange={(e) => {
+                          const convert = new Date(e.target.value);
+                          convert.setHours(23);
+                          convert.setMinutes(59);
+                          convert.setSeconds(59);
+                          convert.setMilliseconds(999);
+                          setCurDate(convert);
+                        }}
                         fullWidth
                       />
                     </Grid>
@@ -248,15 +270,20 @@ export default function EquipmentDetail(props) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          {equipment.status === 'out of service' ? (
+          {latest.status === 'out of service' ? (
             <Button autoFocus variant="contained" color="error" onClick={handleDeleteEquipment}>
               {/* <Button autoFocus variant="contained" color="error" onClick={handleUpdateEquipment}> */}
               Delete Equipment
             </Button>
           ) : (
-            <Button autoFocus onClick={handleUpdateEquipment} variant="contained" color="primary">
-              Update
-            </Button>
+            <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={1} spacing={1}>
+              <Button onClick={handleUpdateEquipment} variant="contained" color="primary" fullWidth>
+                Update Data
+              </Button>
+              <Button onClick={handleClose} variant="contained" color="error">
+                Close
+              </Button>
+            </Stack>
           )}
         </DialogActions>
       </Dialog>

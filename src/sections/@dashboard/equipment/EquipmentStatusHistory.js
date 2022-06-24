@@ -27,6 +27,7 @@ import {
 } from '@mui/material';
 import Scrollbar from '../../../components/Scrollbar';
 import EquipmentHistoryHead from './EquipmentHistoryHead';
+import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +46,19 @@ export default function EquipmentStatusHistory(props) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('date');
 
-  console.log('table', equipment, equipmentsHistory);
+  const statusColor = (status) => {
+    let color = 'gray';
+    if (status === 'available') {
+      color = 'green';
+    } else if (status === 'repairing') {
+      color = 'orange';
+    } else if (status === 'out of service') {
+      color = 'red';
+    } else {
+      color = 'gray';
+    }
+    return color;
+  };
 
   const filtered = useMemo(() => {
     return equipmentsHistory
@@ -90,7 +103,9 @@ export default function EquipmentStatusHistory(props) {
         fullWidth
         maxWidth="xl"
       >
-        <DialogTitle id="alert-dialog-title">{equipment.name} HISTORY</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h4">{equipment.name} HISTORY</Typography>
+        </DialogTitle>
         <DialogContent>
           <Container maxWidth="xl" fixed>
             <Card>
@@ -120,10 +135,19 @@ export default function EquipmentStatusHistory(props) {
                               // aria-checked={isItemSelected}
                             >
                               <TableCell component="th" id={date} scope="row" align="left">
-                                {date}
+                                <Typography>{date}</Typography>
                               </TableCell>
-                              <TableCell align="left">{status}</TableCell>
-                              <TableCell align="left">{description}</TableCell>
+
+                              <TableCell align="left">
+                                <Typography color={statusColor(status)}>
+                                  <Iconify icon="carbon:dot-mark" />
+                                  {status?.toUpperCase()}
+                                </Typography>
+                              </TableCell>
+
+                              <TableCell align="left">
+                                <Typography>{description}</Typography>
+                              </TableCell>
                             </TableRow>
                           </>
                         );
@@ -161,7 +185,9 @@ export default function EquipmentStatusHistory(props) {
           </Container>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose} variant="contained" color="error">
+            Close
+          </Button>
           {/* <Button onClick={handleClose}>Agree</Button> */}
         </DialogActions>
       </Dialog>

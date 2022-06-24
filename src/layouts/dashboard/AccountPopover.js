@@ -5,6 +5,7 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton } from '@mui/material';
 // components
 import MenuPopover from '../../components/MenuPopover';
+import Iconify from '../../components/Iconify';
 // mocks_
 import account from '../../_mock/account';
 
@@ -63,7 +64,8 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        {/* <Iconify icon="fa-solid:user-nurse" color="#fff" width={22} height={22} /> */}
+        <Avatar src={account.photoURL} alt="W" />
       </IconButton>
 
       <MenuPopover
@@ -82,10 +84,12 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {/* {account.displayName} */}
+            {'WARD 6/3'}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {/* {account.email} */}
+            {'ward63.bah@gmail.com'}
           </Typography>
         </Box>
 

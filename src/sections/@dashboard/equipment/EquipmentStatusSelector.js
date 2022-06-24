@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import { FormHelperText } from '@mui/material';
 import Select from '@mui/material/Select';
 
 const statusList = ['available', 'repairing', 'out of service', 'delete'];
@@ -53,6 +54,7 @@ export default function EquipmentStatusSelector(props) {
                 return <MenuItem value={status}>{status.toUpperCase()}</MenuItem>;
               })}
           </Select>
+          {status === '' && <FormHelperText style={{ color: 'red' }}>Please select type</FormHelperText>}
         </FormControl>
       )}
     </Box>
