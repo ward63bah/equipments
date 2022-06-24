@@ -18,12 +18,12 @@ export default function EquipmentTypeSelector(props) {
   return (
     <Box sx={{ minWidth: 250 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Type</InputLabel>
+        <InputLabel id="demo-simple-select-label">{type !== '' ? type : 'All Type'}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={type}
-          label="Type"
+          label={type !== '' ? type : 'All Type'}
           onChange={handlerFilterByType}
         >
           <MenuItem value={''}>All</MenuItem>;

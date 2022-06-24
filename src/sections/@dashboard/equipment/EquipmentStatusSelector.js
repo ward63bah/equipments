@@ -20,12 +20,12 @@ export default function EquipmentStatusSelector(props) {
     <Box sx={{ minWidth: 200 }}>
       {latestStatus === undefined ? (
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Status</InputLabel>
+          <InputLabel id="demo-simple-select-label">{status !== '' ? status : 'All Status'}</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={status}
-            label="status"
+            label={status !== '' ? status : 'All Status'}
             autoFocus
             onChange={handlerFilterByStatus}
           >
