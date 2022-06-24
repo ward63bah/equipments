@@ -275,7 +275,8 @@ export default function DashboardApp() {
               icon={'fluent:delete-20-filled'}
             />
           </Grid> */}
-          <Grid item xs={12} md={12} lg={12} align="right">
+
+          {/* <Grid item xs={12} md={12} lg={12} align="right">
             <EquipmentScan
               equipment={equipment}
               equipments={equipments}
@@ -283,7 +284,7 @@ export default function DashboardApp() {
               onScanQR={handleScanQR}
               onDefaultPage={onDefaultPage}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={12} lg={12}>
             {/* <EquipmentTypes onSelected={onSelected} /> */}
