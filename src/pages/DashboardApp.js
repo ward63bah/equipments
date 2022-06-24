@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { filter, orderBy } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography, Button } from '@mui/material';
@@ -75,6 +76,8 @@ function applySortFilter(orderBy, array, comparator, query) {
 export default function DashboardApp() {
   const theme = useTheme();
   const { sn } = useParams();
+  const history = useNavigate();
+  // const { location } = useLocation();
   console.log('sn', sn);
 
   const [show, setShow] = useState(false);
@@ -214,7 +217,8 @@ export default function DashboardApp() {
 
   const onCloseDialog = useCallback(() => {
     setShow(false);
-  }, [setShow]);
+    history.replace('/');
+  }, [setShow, history]);
 
   return (
     <Page title="Dashboard">

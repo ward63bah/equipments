@@ -20,12 +20,12 @@ import EquipmentTypes from './pages/EquipmentTypes';
 export default function Router() {
   return useRoutes([
     {
-      path: '/equipments',
+      path: '/',
       element: <DashboardLayout />,
       children: [
         { path: '', element: <DashboardApp /> },
         // { path: ':sn', element: <DashboardApp /> },
-        { path: 'sn/:sn', element: <DashboardApp /> },
+        { path: 'sn=:sn', element: <DashboardApp /> },
         // { path: 'equipment', element: <DashboardApp /> },
         // { path: 'equipment', element: <Equipment equipments={equipments} /> },
         // { path: 'user', element: <User /> },
