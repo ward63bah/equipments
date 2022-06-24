@@ -89,8 +89,9 @@ export default function DashboardApp() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterType, setFilterType] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [filtered, setFiltered] = useState(_equipments);
 
-  // console.log('equipments', equipments, _equipments);
+  console.log('equipments', equipments);
   useEffect(() => {
     const index = equipments.findIndex((e) => e.sn === sn);
     if (index !== -1) {
@@ -100,61 +101,54 @@ export default function DashboardApp() {
 
   const handleFilterByType = useCallback(
     (type) => {
-      setFilterType(type);
+      let updateFiltered = [];
       if (type !== '') {
-        if (equipments.length !== _equipments.length && (filterStatus !== '' || filterName !== '')) {
-          setEquipments(equipments.filter((e) => e.typeId === type));
-        } else {
-          setEquipments(_equipments.filter((e) => e.typeId === type));
-        }
+        updateFiltered = equipments.filter((e) => e.typeId === type);
+      } else {
+        updateFiltered = equipments;
       }
-
-      if (type === '') {
-        if (equipments.length !== _equipments.length && (filterStatus !== '' || filterName !== '')) {
-          setEquipments(equipments);
-        } else {
-          setEquipments(_equipments);
-        }
+      if (filterStatus !== '') {
+        updateFiltered = updateFiltered.filter((e) => e.status === filterStatus);
       }
+      setFilterType(type);
+      setFiltered(updateFiltered);
+      console.log('filter', updateFiltered);
     },
-    [setFilterType, setEquipments, equipments, _equipments, filterName, filterStatus]
+    [setFilterType, setFiltered, equipments, filterStatus]
   );
 
   const handleFilterByStatus = useCallback(
     (status) => {
+      console.log('status', status);
+      let updateFiltered = [];
       if (status !== '') {
-        if (equipments.length !== _equipments.length && (filterType !== '' || filterName !== '')) {
-          setEquipments(equipments.filter((e) => e.status === status));
-        } else {
-          setEquipments(_equipments.filter((e) => e.status === status));
-        }
+        updateFiltered = equipments.filter((e) => e.status === status);
+      } else {
+        updateFiltered = equipments;
       }
-
-      if (status === '') {
-        if (equipments.length !== _equipments.length && (filterType !== '' || filterName !== '')) {
-          setEquipments(equipments);
-        } else {
-          setEquipments(_equipments);
-        }
+      if (filterType !== '') {
+        updateFiltered = updateFiltered.filter((e) => e.typeId === filterType);
       }
-
       setFilterStatus(status);
+      setFiltered(updateFiltered);
+      console.log('filter', updateFiltered);
     },
-    [setFilterStatus, setEquipments, equipments, _equipments, filterType, filterName]
+    [setFilterStatus, setFiltered, equipments, filterType]
   );
 
   const handleFilterByName = useCallback(
     (event, order, orderBy) => {
-      if (equipments.length !== _equipments.length && (filterType !== '' || filterStatus !== '')) {
-        setEquipments(applySortFilter(orderBy, equipments, getComparator(order, orderBy), event.target.value));
+      if (filterType !== '' || filterStatus !== '') {
+        setFiltered(applySortFilter(orderBy, filtered, getComparator(order, orderBy), event.target.value));
       } else {
-        setEquipments(applySortFilter(orderBy, _equipments, getComparator(order, orderBy), event.target.value));
+        setFiltered(applySortFilter(orderBy, equipments, getComparator(order, orderBy), event.target.value));
       }
       setFilterName(event.target.value);
       setOrder(order);
       setOrderBy(orderBy);
+      // console.log('filter', );
     },
-    [setFilterName, setOrder, setOrderBy, setEquipment, equipments, _equipments]
+    [setFilterName, setOrder, setOrderBy, setFiltered, equipments, filtered]
   );
 
   const handleUpdateEquipment = useCallback(
@@ -171,10 +165,23 @@ export default function DashboardApp() {
           ...equipments.slice(index + 1),
         ];
         setEquipments(updateData);
+
+        let updateFiltered = [];
+        if (filterType !== '') {
+          updateFiltered = updateData.filter((e) => e.typeId === filterType);
+        } else {
+          updateFiltered = updateData.filter((e) => e.type !== '');
+        }
+        if (filterStatus !== '') {
+          updateFiltered = updateFiltered.filter((e) => e.status === filterStatus);
+        } else {
+          updateFiltered = updateFiltered.filter((e) => e.status !== '');
+        }
+        setFiltered(updateFiltered);
         console.log('update', updateData);
       }
     },
-    [setEquipmentsHistory, equipmentsHistory, equipments, setEquipments]
+    [setEquipmentsHistory, equipmentsHistory, equipments, setEquipments, filterType, filterName, setFiltered]
   );
 
   const handleDeleteEquipment = useCallback(
@@ -262,6 +269,7 @@ export default function DashboardApp() {
             <Equipment
               equipment={equipment}
               equipments={equipments}
+              filtered={filtered}
               equipmentTypes={equipmentTypes}
               filterName={filterName}
               selected={selected}

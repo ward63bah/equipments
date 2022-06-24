@@ -70,6 +70,7 @@ export default function Equipment(props) {
     equipment,
     equipments,
     equipmentTypes,
+    filtered,
     filterName,
     selected,
     onSelected,
@@ -82,7 +83,7 @@ export default function Equipment(props) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
 
-  const [rowsPerPage, setRowsPerPage] = useState(equipments?.length);
+  const [rowsPerPage, setRowsPerPage] = useState(filtered?.length);
 
   const statusColor = (status) => {
     let color = 'gray';
@@ -107,8 +108,8 @@ export default function Equipment(props) {
     setPage(0);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - equipments.length) : 0;
-  const isUserNotFound = equipments.length === 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filtered.length) : 0;
+  const isUserNotFound = filtered.length === 0;
 
   return (
     <Page title="User">
@@ -203,11 +204,11 @@ export default function Equipment(props) {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={equipments.length}
+                  rowCount={filtered.length}
                   // numSelected={selected.length}
                 />
                 <TableBody>
-                  {equipments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { sn, name, status, typeId } = row;
                     // const isItemSelected = selected.indexOf(sn) !== -1;
 
@@ -295,7 +296,7 @@ export default function Equipment(props) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25, 30]}
             component="div"
-            count={equipments.length}
+            count={filtered.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
