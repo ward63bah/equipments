@@ -24,7 +24,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: '', element: <DashboardApp /> },
-        { path: 'equipments', element: <DashboardApp /> },
+        // { path: 'equipments', element: <DashboardApp /> },
         // { path: ':sn', element: <DashboardApp /> },
         { path: 'sn=:sn', element: <DashboardApp /> },
         // { path: 'equipment', element: <DashboardApp /> },
