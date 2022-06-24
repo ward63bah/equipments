@@ -121,7 +121,7 @@ export default function Equipment(props) {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="flex-end" mb={2} spacing={1}>
-          <EquipmentScan equipment={equipment} equipments={equipments} onSelected={onSelected} onScanQR={onScanQR} />
+          {/* <EquipmentScan equipment={equipment} equipments={equipments} onSelected={onSelected} onScanQR={onScanQR} /> */}
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New Equipment
           </Button>

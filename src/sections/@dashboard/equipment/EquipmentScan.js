@@ -4,10 +4,10 @@ import { Button, Dialog, DialogActions, DialogTitle, DialogContent, Typography, 
 import Iconify from '../../../components/Iconify';
 
 export default function EquipmentScan(props) {
-  const { equipment, equipments, onSelected, onScanQR } = props;
+  const { equipment, equipments, onSelected, onScanQR, onDefaultPage } = props;
   const [data, setData] = useState('No result');
   const [open, setOpen] = useState(false);
-  const [matched, setMatched] = useState(false);
+  // const [matched, setMatched] = useState(false);
   //   const [equipment, setEquipment] = useState();
 
   const constraints = {
@@ -21,21 +21,19 @@ export default function EquipmentScan(props) {
   const handleClose = () => {
     setOpen(false);
     setData('No result');
-    setMatched(false);
+    onDefaultPage();
+    // setMatched(false);
   };
 
-  const onFindEquipment = useCallback(
-    (sn) => {
-      const index = equipments.findIndex((e) => e.sn === sn);
-      if (index !== -1) {
-        setData(sn);
-        setMatched(true);
-        onScanQR(equipments[index]);
-        //   setEquipment(equipments[index]);
-      }
-    },
-    [equipments]
-  );
+  const onFindEquipment = (sn) => {
+    const index = equipments.findIndex((e) => e.sn === sn);
+    if (index !== -1) {
+      setData(sn);
+      // setMatched(true);
+      onScanQR(index);
+      //   setEquipment(equipments[index]);
+    }
+  };
 
   return (
     <>
@@ -53,7 +51,6 @@ export default function EquipmentScan(props) {
       >
         <DialogTitle id="alert-dialog-title">QR SCANNER</DialogTitle>
         <DialogContent>
-          <Typography>Serial Number : {data}</Typography>
           {data === 'No result' ? (
             <QrReader
               constraints={constraints}
@@ -74,15 +71,22 @@ export default function EquipmentScan(props) {
             />
           ) : (
             <>
-              {matched === true ? (
-                <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
+              {equipment !== undefined ? (
+                <Stack alignItems="center" justifyContent="space-around" mb={1} spacing={1}>
+                  <Typography variant={'h6'} style={{ color: 'green' }}>
+                    Equipment Founded
+                  </Typography>
+                  <Typography>Serial Number : {equipment.sn}</Typography>
+                  <Typography>Name : {equipment.name}</Typography>
                   <Button
                     // component={Link}
                     target="_blank"
                     // href="https://mantisdashboard.io"
                     variant="contained"
-                    color="success"
-                    size="small"
+                    color="primary"
+                    size="medium"
+                    fullWidth
+                    startIcon={<Iconify icon="bxs:message-square-edit" />}
                     onClick={() => onSelected('edit', equipment)}
                   >
                     Edit
@@ -93,16 +97,18 @@ export default function EquipmentScan(props) {
                     // href="https://mantisdashboard.io"
                     variant="contained"
                     color="warning"
-                    size="small"
+                    size="medium"
+                    fullWidth
+                    startIcon={<Iconify icon="fa-solid:history" />}
                     onClick={() => onSelected('history', equipment)}
                   >
                     History
                   </Button>
                 </Stack>
               ) : (
-                <Stack direction="row" alignItems="center" justifyContent="flex-start" mb={1} spacing={1}>
-                  <Typography variant="h5" gutterBottom>
-                    No Equipment Matched
+                <Stack alignItems="center" justifyContent="space-around" mb={1} spacing={1}>
+                  <Typography variant={'h6'} style={{ color: 'red' }}>
+                    Equipment not found
                   </Typography>
                 </Stack>
               )}

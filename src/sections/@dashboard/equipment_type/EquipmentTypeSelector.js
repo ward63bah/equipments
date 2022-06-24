@@ -23,7 +23,7 @@ export default function EquipmentTypeSelector(props) {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={type}
-          label={type !== '' ? type : 'All Type'}
+          label={type !== '' ? equipmentTypes?.find((e) => e.id === type).name : 'All Type'}
           onChange={handlerFilterByType}
         >
           <MenuItem value={''}>All</MenuItem>;

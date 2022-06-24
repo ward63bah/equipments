@@ -11,6 +11,14 @@ import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import EquipmentCalibrate from './EquipmentCalibrate';
 import EquipmentDetail from '../sections/@dashboard/equipment/EquipmentDetail';
+import EquipmentScan from '../sections/@dashboard/equipment/EquipmentScan';
+import EquipmentFromLink from '../sections/@dashboard/equipment/EquipmentFromLink';
+import Equipment from './Equipment';
+import EquipmentListToolbar from '../sections/@dashboard/equipment/EquipmentListToolbar';
+import EquipmentTypeSelector from '../sections/@dashboard/equipment_type/EquipmentTypeSelector';
+import EquipmentStatusSelector from '../sections/@dashboard/equipment/EquipmentStatusSelector';
+import NewRepairing from '../sections/repairing/NewRepairing';
+import EquipmentStatusHistory from '../sections/@dashboard/equipment/EquipmentStatusHistory';
 
 // sections
 import {
@@ -28,13 +36,6 @@ import {
 // mock
 import { equipments as _equipments } from '../_mock/equipment';
 import { equipmentTypes } from '../_mock/equipment_types';
-// import EquipmentTypes from './EquipmentTypes';
-import Equipment from './Equipment';
-import EquipmentListToolbar from '../sections/@dashboard/equipment/EquipmentListToolbar';
-import EquipmentTypeSelector from '../sections/@dashboard/equipment_type/EquipmentTypeSelector';
-import EquipmentStatusSelector from '../sections/@dashboard/equipment/EquipmentStatusSelector';
-import NewRepairing from '../sections/repairing/NewRepairing';
-import EquipmentStatusHistory from '../sections/@dashboard/equipment/EquipmentStatusHistory';
 
 function descendingComparator(a, b, orderBy) {
   console.log('type/status/name', a, b, orderBy);
@@ -76,11 +77,12 @@ function applySortFilter(orderBy, array, comparator, query) {
 export default function DashboardApp() {
   const theme = useTheme();
   const { sn } = useParams();
-  const history = useNavigate();
+  const navigate = useNavigate();
   // const { location } = useLocation();
   console.log('sn', sn);
 
   const [show, setShow] = useState(false);
+  const [fromLink, setFromLink] = useState(false);
   const [state, setState] = useState('');
   const [equipment, setEquipment] = useState();
   const [equipments, setEquipments] = useState(_equipments);
@@ -96,11 +98,15 @@ export default function DashboardApp() {
 
   console.log('equipments', equipments);
   useEffect(() => {
-    const index = equipments.findIndex((e) => e.sn === sn);
-    if (index !== -1) {
-      onSelected('edit', equipments[index]);
+    if (sn !== undefined) {
+      const index = equipments.findIndex((e) => e.sn === sn);
+      if (index !== -1) {
+        // onSelected('edit', equipments[index]);
+        setEquipment(equipments[index]);
+      }
+      setFromLink(true);
     }
-  }, [sn]);
+  }, [sn, setEquipment, setFromLink]);
 
   const handleFilterByType = useCallback(
     (type) => {
@@ -203,22 +209,24 @@ export default function DashboardApp() {
       setState(state);
       setEquipment(equipment);
       setShow(true);
-      console.log('selected', state, equipment);
     },
     [setState, setEquipment, setShow]
   );
 
   const handleScanQR = useCallback(
-    (equipment) => {
-      setEquipment(equipment);
+    (index) => {
+      setEquipment(equipments[index]);
     },
-    [setEquipment]
+    [setEquipment, equipments]
   );
+
+  const onDefaultPage = useCallback(() => {
+    navigate('/', { replace: true });
+  }, [navigate]);
 
   const onCloseDialog = useCallback(() => {
     setShow(false);
-    history.replace('/');
-  }, [setShow, history]);
+  }, [setShow]);
 
   return (
     <Page title="Dashboard">
@@ -267,6 +275,15 @@ export default function DashboardApp() {
               icon={'fluent:delete-20-filled'}
             />
           </Grid> */}
+          <Grid item xs={12} md={12} lg={12} align="right">
+            <EquipmentScan
+              equipment={equipment}
+              equipments={equipments}
+              onSelected={onSelected}
+              onScanQR={handleScanQR}
+              onDefaultPage={onDefaultPage}
+            />
+          </Grid>
 
           <Grid item xs={12} md={12} lg={12}>
             {/* <EquipmentTypes onSelected={onSelected} /> */}
@@ -283,6 +300,9 @@ export default function DashboardApp() {
               onFilterName={handleFilterByName}
               onScanQR={handleScanQR}
             />
+            {fromLink === true && (
+              <EquipmentFromLink equipment={equipment} onSelected={onSelected} onDefaultPage={onDefaultPage} />
+            )}
             {show && state === 'edit' && (
               <EquipmentDetail
                 equipment={equipment}
