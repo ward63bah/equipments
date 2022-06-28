@@ -95,7 +95,7 @@ export default function EquipmentDetail(props) {
 
   const [status, setStatus] = useState('');
   const [description, setDescription] = useState('');
-  const [curDate, setCurDate] = useState(new Date());
+  const [curDate, setCurDate] = useState(format(new Date(), 'yyyy-MM-dd'));
 
   const handleUpdateEquipment = () => {
     if (curDate && status !== '') {
@@ -140,7 +140,13 @@ export default function EquipmentDetail(props) {
               <img
                 src={images[`${equipment.sn}.jpg`]}
                 alt={equipment?.name}
-                style={{ width: '30vw', height: '40vh', align: 'center', border: '1px solid gray', borderRadius: 20 }}
+                style={{
+                  width: '30vw',
+                  maxHeight: '50vh',
+                  align: 'center',
+                  border: '1px solid gray',
+                  borderRadius: 20,
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -238,17 +244,17 @@ export default function EquipmentDetail(props) {
                         type="date"
                         label=""
                         variant="outlined"
-                        // value={curDate}
-                        value={format(curDate, 'yyyy-MM-dd')}
-                        // onChange={(e) => setCurDate(e.target.value)}
-                        onChange={(e) => {
-                          const convert = new Date(e.target.value);
-                          convert.setHours(23);
-                          convert.setMinutes(59);
-                          convert.setSeconds(59);
-                          convert.setMilliseconds(999);
-                          setCurDate(convert);
-                        }}
+                        value={curDate}
+                        // value={format(curDate, 'yyyy-MM-dd')}
+                        onChange={(e) => setCurDate(e.target.value)}
+                        // onChange={(e) => {
+                        //   const convert = new Date(e.target.value);
+                        //   convert.setHours(23);
+                        //   convert.setMinutes(59);
+                        //   convert.setSeconds(59);
+                        //   convert.setMilliseconds(999);
+                        //   setCurDate(convert);
+                        // }}
                         fullWidth
                       />
                     </Grid>

@@ -22,6 +22,7 @@ export default function EquipmentStatusSelector(props) {
       {latestStatus === undefined ? (
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">{status !== '' ? status : 'All Status'}</InputLabel>
+          {/* <InputLabel id="demo-simple-select-label">Status</InputLabel> */}
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
