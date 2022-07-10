@@ -1,7 +1,13 @@
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
 // @mui
 import { styled } from '@mui/material/styles';
 import { Card, Link, Container, Typography } from '@mui/material';
+// firebase
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, logInWithEmailAndPassword, signInWithGoogle } from '../firebase';
+
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -61,6 +67,22 @@ export default function Login() {
 
   const mdUp = useResponsive('up', 'md');
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+  const login = () => {
+    logInWithEmailAndPassword(email, password);
+  };
+
+  useEffect(() => {
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    if (user) navigate('/equipments');
+  }, [user, loading]);
+
   return (
     <Page title="Login">
       <RootStyle>
@@ -96,7 +118,14 @@ export default function Login() {
 
             <AuthSocial />
 
-            <LoginForm />
+            <LoginForm
+              email={email}
+              password={password}
+              handleEmail={(value) => setEmail(value)}
+              handlePassword={(value) => setPassword(value)}
+              handleLogin={login}
+              handleSignInWithGoogle={signInWithGoogle}
+            />
 
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>

@@ -3,9 +3,12 @@ import { filter, orderBy } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 // import { useLocation } from 'react-router-dom';
+import { getDatabase, ref, child, get } from 'firebase/database';
+
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography, Button } from '@mui/material';
+
 // components
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
@@ -32,6 +35,8 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+
+import { database } from '../firebase';
 
 // mock
 import { equipments as _equipments } from '../_mock/equipment';
@@ -73,6 +78,18 @@ function applySortFilter(orderBy, array, comparator, query) {
 }
 
 // ----------------------------------------------------------------------
+// const dbRef = ref(database);
+// get(child(dbRef, `equipment`))
+//   .then((snapshot) => {
+//     if (snapshot.exists()) {
+//       console.log('from db', snapshot.val());
+//     } else {
+//       console.log('No data available');
+//     }
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
 
 export default function DashboardApp() {
   const theme = useTheme();

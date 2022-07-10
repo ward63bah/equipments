@@ -8,6 +8,7 @@ import User from './pages/User';
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
 import Register from './pages/Register';
+import Reset from './pages/Reset';
 import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 
@@ -21,6 +22,22 @@ export default function Router() {
   return useRoutes([
     {
       path: '/',
+      // element: <DashboardLayout />,
+      children: [{ path: '', element: <Login /> }],
+    },
+    {
+      path: '/register',
+      // element: <DashboardLayout />,
+      children: [{ path: '', element: <Register /> }],
+    },
+    {
+      path: '/reset',
+      // element: <DashboardLayout />,
+      children: [{ path: '', element: <Reset /> }],
+    },
+
+    {
+      path: '/equipments',
       element: <DashboardLayout />,
       children: [
         { path: '', element: <DashboardApp /> },

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useNavigate as useHistory } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // @mui
 import { styled } from '@mui/material/styles';
 import { Card, Link, Container, Typography } from '@mui/material';
 // firebase
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, registerWithEmailAndPassword, signInWithGoogle } from '../firebase';
+import { auth, sendPasswordReset } from '../firebase';
+
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
 import Page from '../components/Page';
 import Logo from '../components/Logo';
 // sections
-import { RegisterForm } from '../sections/auth/register';
+import { ResetForm } from '../sections/auth/reset';
 import AuthSocial from '../sections/auth/AuthSocial';
 
 // ----------------------------------------------------------------------
@@ -61,34 +62,30 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Register() {
+export default function Reset() {
   const smUp = useResponsive('up', 'sm');
 
   const mdUp = useResponsive('up', 'md');
-  const [name, setName] = useState('');
+
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [user, loading, error] = useAuthState(auth);
-  const history = useHistory();
-  const register = () => {
-    if (!name) alert('Please enter name');
-    registerWithEmailAndPassword(name, email, password);
-  };
+  const navigate = useNavigate();
   useEffect(() => {
     if (loading) return;
-    if (user) history.replace('/equipments');
+    if (user) navigate('/equipments');
   }, [user, loading]);
 
   return (
-    <Page title="Register">
+    <Page title="Reset">
       <RootStyle>
         <HeaderStyle>
           <Logo />
+
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Already have an account? {''}
-              <Link variant="subtitle2" component={RouterLink} to="/login">
-                Login
+              Don’t have an account? {''}
+              <Link variant="subtitle2" component={RouterLink} to="/register">
+                Get started
               </Link>
             </Typography>
           )}
@@ -97,50 +94,33 @@ export default function Register() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Manage the job more effectively with Minimal
+              Hi, Welcome Back
             </Typography>
-            <img alt="register" src="/static/illustrations/illustration_register.png" />
+            <img src="/static/illustrations/illustration_login.png" alt="login" />
           </SectionStyle>
         )}
 
-        <Container>
+        <Container maxWidth="sm">
           <ContentStyle>
             <Typography variant="h4" gutterBottom>
-              Get started absolutely free.
+              Sign in to Minimal
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography>
+            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
 
             <AuthSocial />
 
-            <RegisterForm
-              name={name}
+            <ResetForm
               email={email}
-              password={password}
-              handleName={(value) => setName(value)}
               handleEmail={(value) => setEmail(value)}
-              handlePassword={(value) => setPassword(value)}
-              handleRegister={register}
-              handleSignInWithGoogle={signInWithGoogle}
+              handleReset={() => sendPasswordReset(email)}
             />
 
-            <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to Minimal&nbsp;
-              <Link underline="always" color="text.primary" href="#">
-                Terms of Service
-              </Link>
-              {''}and{''}
-              <Link underline="always" color="text.primary" href="#">
-                Privacy Policy
-              </Link>
-              .
-            </Typography>
-
             {!smUp && (
-              <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                Already have an account?{' '}
-                <Link variant="subtitle2" to="/" component={RouterLink}>
-                  Login
+              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+                Don’t have an account?{' '}
+                <Link variant="subtitle2" component={RouterLink} to="/register">
+                  Get started
                 </Link>
               </Typography>
             )}

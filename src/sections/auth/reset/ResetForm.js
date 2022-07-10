@@ -10,14 +10,7 @@ import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-export default function LoginForm({
-  email,
-  password,
-  handleEmail,
-  handlePassword,
-  handleLogin,
-  handleSignInWithGoogle,
-}) {
+export default function ResetForm({ email, handleEmail, handleReset }) {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -60,30 +53,19 @@ export default function LoginForm({
             onChange={(e) => handleEmail(e.target.value)}
             value={email}
           />
-
-          <TextField
+          <LoadingButton
             fullWidth
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            label="Password"
-            {...getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword} edge="end">
-                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            // error={Boolean(touched.password && errors.password)}
-            // helperText={touched.password && errors.password}
-            onChange={(e) => handlePassword(e.target.password)}
-            value={password}
-          />
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+            onClick={() => handleReset()}
+          >
+            Send password reset email
+          </LoadingButton>
         </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
           <FormControlLabel
             control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
             label="Remember me"
@@ -92,29 +74,23 @@ export default function LoginForm({
           <Link component={RouterLink} variant="subtitle2" to="/reset" underline="hover">
             Forgot password?
           </Link>
-        </Stack>
-        <Stack direction="column" alignItems="center" justifyContent="space-around" spacing={1}>
+        </Stack> */}
+        {/* <Stack direction="column" alignItems="center" justifyContent="space-around" spacing={1}>
           <LoadingButton
             fullWidth
             size="large"
             type="submit"
             variant="contained"
             loading={isSubmitting}
-            onClick={() => handleLogin(email, password)}
+            onClick={() => handleReset()}
           >
-            Login
+            Send password reset email
           </LoadingButton>
-
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            // loading={isSubmitting}
-            onClick={() => handleSignInWithGoogle()}
-          >
-            Login With Google
-          </LoadingButton>
+        </Stack> */}
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+          <Link component={RouterLink} variant="subtitle2" to="/register" underline="hover">
+            Don't have an account?
+          </Link>
         </Stack>
       </Form>
     </FormikProvider>
