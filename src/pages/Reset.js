@@ -94,9 +94,9 @@ export default function Reset() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
+              Welcome to Ward 6/3
             </Typography>
-            <img src="/static/illustrations/illustration_login.png" alt="login" />
+            {/* <img src="/static/illustrations/illustration_login.png" alt="login" /> */}
           </SectionStyle>
         )}
 
