@@ -56,7 +56,7 @@ export default function LoginForm({
             label="Email address"
             {...getFieldProps('email')}
             // error={Boolean(touched.email && errors.email)}
-            // helperText={touched.email && errors.email}
+            helperText={touched.email && errors.email}
             onChange={(e) => handleEmail(e.target.value)}
             value={email}
           />
@@ -77,8 +77,8 @@ export default function LoginForm({
               ),
             }}
             // error={Boolean(touched.password && errors.password)}
-            // helperText={touched.password && errors.password}
-            onChange={(e) => handlePassword(e.target.password)}
+            helperText={touched.password && errors.password}
+            onChange={(e) => handlePassword(e.target.value)}
             value={password}
           />
         </Stack>
@@ -105,7 +105,7 @@ export default function LoginForm({
             Login
           </LoadingButton>
 
-          <LoadingButton
+          {/* <LoadingButton
             fullWidth
             size="large"
             type="submit"
@@ -114,7 +114,7 @@ export default function LoginForm({
             onClick={() => handleSignInWithGoogle()}
           >
             Login With Google
-          </LoadingButton>
+          </LoadingButton> */}
         </Stack>
       </Form>
     </FormikProvider>

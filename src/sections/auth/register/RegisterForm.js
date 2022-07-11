@@ -42,7 +42,7 @@ export default function RegisterForm({
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+      navigate('/', { replace: true });
     },
   });
 
@@ -88,19 +88,19 @@ export default function RegisterForm({
 
           <TextField
             fullWidth
-            autoComplete="username"
+            autoComplete="email"
             type="email"
             label="Email address"
             {...getFieldProps('email')}
             // error={Boolean(touched.email && errors.email)}
-            // helperText={touched.email && errors.email}
+            helperText={touched.email && errors.email}
             onChange={(e) => handleEmail(e.target.value)}
             value={email}
           />
 
           <TextField
             fullWidth
-            autoComplete="current-password"
+            autoComplete="password"
             type={showPassword ? 'text' : 'password'}
             label="Password"
             {...getFieldProps('password')}
@@ -114,8 +114,8 @@ export default function RegisterForm({
               ),
             }}
             // error={Boolean(touched.password && errors.password)}
-            // helperText={touched.password && errors.password}
-            onChange={(e) => handlePassword(e.target.password)}
+            helperText={touched.password && errors.password}
+            onChange={(e) => handlePassword(e.target.value)}
             value={password}
           />
 
@@ -130,7 +130,7 @@ export default function RegisterForm({
             Register
           </LoadingButton>
 
-          <LoadingButton
+          {/* <LoadingButton
             fullWidth
             size="large"
             type="submit"
@@ -139,7 +139,7 @@ export default function RegisterForm({
             onClick={() => handleSignInWithGoogle()}
           >
             Register with Google
-          </LoadingButton>
+          </LoadingButton> */}
         </Stack>
       </Form>
     </FormikProvider>

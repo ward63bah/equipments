@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useNavigate as useHistory } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // @mui
 import { styled } from '@mui/material/styles';
@@ -69,14 +69,14 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, loading, error] = useAuthState(auth);
-  const history = useHistory();
+  const navigate = useNavigate();
   const register = () => {
     if (!name) alert('Please enter name');
     registerWithEmailAndPassword(name, email, password);
   };
   useEffect(() => {
     if (loading) return;
-    if (user) history.replace('/equipments');
+    if (user) navigate('/');
   }, [user, loading]);
 
   return (
@@ -109,9 +109,9 @@ export default function Register() {
               Get started absolutely free.
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography>
+            {/* <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography>
 
-            <AuthSocial />
+            <AuthSocial /> */}
 
             <RegisterForm
               name={name}
@@ -124,7 +124,7 @@ export default function Register() {
               handleSignInWithGoogle={signInWithGoogle}
             />
 
-            <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
+            {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
               By registering, I agree to Minimal&nbsp;
               <Link underline="always" color="text.primary" href="#">
                 Terms of Service
@@ -134,16 +134,16 @@ export default function Register() {
                 Privacy Policy
               </Link>
               .
-            </Typography>
+            </Typography> */}
 
-            {!smUp && (
-              <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                Already have an account?{' '}
-                <Link variant="subtitle2" to="/" component={RouterLink}>
-                  Login
-                </Link>
-              </Typography>
-            )}
+            {/* {!smUp && ( */}
+            <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+              Already have an account?{' '}
+              <Link variant="subtitle2" to="/" component={RouterLink}>
+                Login
+              </Link>
+            </Typography>
+            {/* )} */}
           </ContentStyle>
         </Container>
       </RootStyle>

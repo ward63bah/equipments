@@ -100,15 +100,15 @@ export default function Reset() {
           </SectionStyle>
         )}
 
-        <Container maxWidth="sm">
+        <Container>
           <ContentStyle>
             <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
+              Reset Password
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
+            {/* <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
 
-            <AuthSocial />
+            <AuthSocial /> */}
 
             <ResetForm
               email={email}
@@ -116,14 +116,23 @@ export default function Reset() {
               handleReset={() => sendPasswordReset(email)}
             />
 
-            {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{' '}
-                <Link variant="subtitle2" component={RouterLink} to="/register">
-                  Get started
-                </Link>
-              </Typography>
-            )}
+            {/* {!smUp && ( */}
+            <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+              Don’t have an account?{' '}
+              <Link variant="subtitle2" component={RouterLink} to="/register">
+                Get started
+              </Link>
+            </Typography>
+            {/* )} */}
+
+            {/* {!smUp && ( */}
+            <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+              Already have an account?{' '}
+              <Link variant="subtitle2" to="/" component={RouterLink}>
+                Login
+              </Link>
+            </Typography>
+            {/* )} */}
           </ContentStyle>
         </Container>
       </RootStyle>

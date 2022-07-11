@@ -49,7 +49,7 @@ export default function ResetForm({ email, handleEmail, handleReset }) {
             label="Email address"
             {...getFieldProps('email')}
             // error={Boolean(touched.email && errors.email)}
-            // helperText={touched.email && errors.email}
+            helperText={touched.email && errors.email}
             onChange={(e) => handleEmail(e.target.value)}
             value={email}
           />
@@ -87,11 +87,11 @@ export default function ResetForm({ email, handleEmail, handleReset }) {
             Send password reset email
           </LoadingButton>
         </Stack> */}
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
           <Link component={RouterLink} variant="subtitle2" to="/register" underline="hover">
             Don't have an account?
           </Link>
-        </Stack>
+        </Stack> */}
       </Form>
     </FormikProvider>
   );
