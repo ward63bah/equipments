@@ -36,7 +36,7 @@ import {
   AppConversionRates,
 } from '../sections/@dashboard/app';
 
-import { database } from '../firebase';
+import { db } from '../firebase';
 
 // mock
 import { equipments as _equipments } from '../_mock/equipment';
@@ -78,18 +78,6 @@ function applySortFilter(orderBy, array, comparator, query) {
 }
 
 // ----------------------------------------------------------------------
-// const dbRef = ref(database);
-// get(child(dbRef, `equipment`))
-//   .then((snapshot) => {
-//     if (snapshot.exists()) {
-//       console.log('from db', snapshot.val());
-//     } else {
-//       console.log('No data available');
-//     }
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
 
 export default function DashboardApp() {
   const theme = useTheme();
@@ -113,7 +101,21 @@ export default function DashboardApp() {
   const [filterStatus, setFilterStatus] = useState('');
   const [filtered, setFiltered] = useState(_equipments);
 
-  console.log('equipments', equipments);
+  useEffect(() => {
+    const dbRef = ref(db);
+    get(child(dbRef, `equipment`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log('from db', snapshot.val());
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch((error) => {
+        console.error('error', error);
+      });
+  }, [db]);
+
   useEffect(() => {
     if (sn !== undefined) {
       const index = equipments.findIndex((e) => e.sn === sn);

@@ -82,7 +82,7 @@ export default function EquipmentDetail(props) {
     });
     return images;
   }
-  const images = importAll(require.context('./../../../img/EQUIPMENT', false, /\.(png|jpe?g|svg|jpeg|jpg)$/));
+  const images = importAll(require.context('../../../img/EQUIPMENT', false, /\.(png|jpe?g|svg|jpeg|jpg)$/));
 
   const handleClickOpen = () => {
     setOpen(true);
